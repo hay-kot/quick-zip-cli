@@ -67,7 +67,7 @@ class ConfigTests:
 
         assert isinstance(app_config, AppConfig)
         test_config = AppConfig(
-            enable_webhooks=True,
+            enable_webhooks=False,
             webhook_address="https://webhooks.com/webhook",
             relative_path="/my/backup/dir",
         )

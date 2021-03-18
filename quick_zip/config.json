@@ -1,6 +1,6 @@
 {
     "config": {
-        "enable_webhooks": true,
+        "enable_webhooks": false,
         "webhook_address": "https://webhooks.com/webhook",
         "relative_path": "/my/backup/dir"
     },
@@ -9,7 +9,16 @@
         "source": "",
         "destination": "./nas/backups",
         "clean_up": false,
+        "clean_up_source": false,
         "keep": 4
     },
-    "jobs": []
+    "jobs": [
+        {
+            "name": "Home Assistant",
+            "source": "/Users/hayden/desktop/Home Assistant/src",
+            "destination": "/Users/hayden/desktop/Home Assistant/dest",
+            "clean_up": true,
+            "clean_up_source": true
+        }
+    ]
 }

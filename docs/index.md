@@ -1,17 +1,24 @@
-# Welcome to MkDocs
+# About the Project
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+#### What QuickZip Is
+QuickZip is a small utility I developed to solve a backup problem on my machines. I wanted a way to quickly backup up small sets of configuration files and data without deploying a massive, hard to maintain tool with too much front-end configuration. QuickZip uses a config.json file to build tiny list of backups that are conducted when called (typically via cron). 
+
+#### What QuickZip Isn't
+QuickZip is NOT a replacement for a robust backup or imaging software. It's primary use case is to collect configuration files on system other similar types of files, zip them up, and stick them somewhere else on your file system. 
 
 ## Commands
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+* `quickzip run` - Run the config file is the base directory. 
+* `quickzip run --config "/path/to/config"` - Run a config file passed as an argument
 
-## Project layout
+## Not Yet Implemented Commands
+* `quickzip audit` - Audits the destination directories and generates a report
+* `quickzip html` - Same as above, but generates an HTML report. 
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+
+## Roadmap
+- [ ] Pass list of files to zip in config file.
+- [ ] CLI implementation
+- [ ] Poetry Package
+- [ ] Read config path from .env
+- [ ] Encrypted Zip Files

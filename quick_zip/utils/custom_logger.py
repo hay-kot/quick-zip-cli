@@ -1,27 +1,20 @@
 import logging
 from pathlib import Path
 
-import coloredlogs
 from core.config import BASE_DIR
+from rich.logging import RichHandler
 
-LOGGER_LEVEL = "INFO"
+LOGGER_LEVEL = "DEBUG"
 CWD = Path(__file__).parent
 LOGGER_FILE = BASE_DIR.joinpath("quick_zip.log")
 
 
+FORMAT = "%(message)s"
 logging.basicConfig(
-    level=LOGGER_LEVEL,
-    format="%(asctime)s %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-    filename=LOGGER_FILE,
-)
-coloredlogs.install(
-    level=LOGGER_LEVEL,
-    fmt="%(asctime)s %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
+    level="INFO", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
 )
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("rich")
 
 
 """ Logging Cheat Sheet

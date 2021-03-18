@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+
 from pydantic import BaseModel
 
 from schema.file_system import FileStat
@@ -17,6 +18,7 @@ class BackupJob(BaseModel):
         destination: Path
         all_files: bool = False
         clean_up: bool = False
+        clean_up_source: bool = False
         keep: int = 4
 
     """
@@ -26,6 +28,7 @@ class BackupJob(BaseModel):
     destination: Path
     all_files: bool = False
     clean_up: bool = False
+    clean_up_source: bool = False
     keep: int = 4
 
     def __repr__(self) -> str:
