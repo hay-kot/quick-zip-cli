@@ -9,7 +9,7 @@ QuickZip is NOT a replacement for a robust backup or imaging software. It's prim
 ## Commands
 
 * `quickzip run` - Run the config file is the base directory. 
-* `quickzip run --config "/path/to/config"` - Run a config file passed as an argument
+* `quickzip run "/path/to/config"` - Run a config file passed as an argument
 
 ## Not Yet Implemented Commands
 * `quickzip audit` - Audits the destination directories and generates a report

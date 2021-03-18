@@ -6,7 +6,7 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
-from schema.file_system import FileStat
+from quick_zip.schema.file_system import FileStat
 
 
 class BackupJob(BaseModel):

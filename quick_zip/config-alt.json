@@ -2,7 +2,7 @@
     "config": {
         "enable_webhooks": false,
         "webhook_address": "https://webhooks.com/webhook",
-        "relative_path": "/my/backup/dir"
+        "relative_path": "/my/backup/fuck"
     },
     "defaults": {
         "name": "ENTRY",
@@ -14,7 +14,7 @@
     },
     "jobs": [
         {
-            "name": "Home Assistant",
+            "name": "Home Fuck Me",
             "source": "/Users/hayden/desktop/Home Assistant/src",
             "destination": "/Users/hayden/desktop/Home Assistant/dest",
             "clean_up": true,

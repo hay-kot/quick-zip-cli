@@ -1,8 +1,21 @@
+[tool.poetry.scripts]
+quick_zip = "quick_zip:main.py"
+
 [tool.poetry]
 name = "quick_zip"
 version = "v0.1.0"
 description = ""
 authors = ["hay-kot <hay-kot@pm.me>"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+python_files = 'test_*'
+python_classes = '*Tests'
+python_functions = 'test_*'
+testpaths = [
+    "tests",
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"

@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-from core.config import BASE_DIR
+from quick_zip.core.config import BASE_DIR
 from rich.logging import RichHandler
 
 LOGGER_LEVEL = "DEBUG"

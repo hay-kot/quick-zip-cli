@@ -3,12 +3,11 @@ import shutil
 import time
 from pathlib import Path
 
-from core.config import ZIP_TYPES
+from quick_zip.core.config import ZIP_TYPES
+from quick_zip.schema.backup_job import BackupJob, BackupResults
+from quick_zip.services.file_stats import get_stats
+from quick_zip.utils.custom_logger import logger
 from rich.console import Console
-from schema.backup_job import BackupJob, BackupResults
-from utils.custom_logger import logger
-
-from services.file_stats import get_stats
 
 console = Console()
 

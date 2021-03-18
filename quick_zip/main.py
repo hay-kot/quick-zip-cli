@@ -1,17 +1,14 @@
 from pathlib import Path
-from time import sleep
-from typing import Optional
 
 import typer
 from rich.console import Console
-from rich.progress import track
 
-from core.config import CONFIG_FILE, config
-from schema.backup_job import BackupJob
-from schema.config import AppConfig
-from services.backups import clean_up_dest, run_job
-from utils.backup import post_file_data
-from utils.custom_logger import logger
+from quick_zip.core.config import CONFIG_FILE
+from quick_zip.schema.backup_job import BackupJob
+from quick_zip.schema.config import AppConfig
+from quick_zip.services.backups import clean_up_dest, run_job
+from quick_zip.utils.backup import post_file_data
+from quick_zip.utils.custom_logger import logger
 
 console = Console()
 
@@ -31,18 +28,14 @@ def clean_up():
 
 
 @app.command()
-def test():
-    print("Test")
-
-
-@app.command()
-def run(cli_config: str = typer.Argument(config)):
-    if cli_config:
-        print(cli_config)
-    else:
-        print(config)
+def run(config_file: str = typer.Argument(CONFIG_FILE)):
     pre_work()
-    all_jobs = BackupJob.get_job_store(CONFIG_FILE)
+
+    if isinstance(config_file, str):
+        config_file = Path(config_file)
+
+    config: AppConfig = AppConfig.from_file(config_file)
+    all_jobs = BackupJob.get_job_store(config_file)
 
     reports = []
     with console.status("[bold green]Generating ZipFile...") as _status:
@@ -69,6 +62,5 @@ def other(name):
 
 
 if __name__ == "__main__":
-    config = config
     app()
     # main(config)
