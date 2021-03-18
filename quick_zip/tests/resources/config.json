@@ -1,0 +1,28 @@
+{
+    "config": {
+        "enable_webhooks": true,
+        "webhook_address": "https://webhooks.com/webhook",
+        "relative_path": "/my/backup/dir"
+    },
+    "defaults": {
+        "name": "ENTRY",
+        "source": "",
+        "destination": "./nas/backups",
+        "clean_up": false,
+        "keep": 4
+    },
+    "jobs": [
+        {
+            "name": "entry_1",
+            "source": "/home/entry_1",
+            "destination": "/home/entry_1/backups",
+            "clean_up": false
+        },
+        {
+            "name": "entry_2",
+            "source": "/home/entry_2",
+            "destination": "/home/entry_2/backups",
+            "clean_up": false
+        }
+    ]
+}

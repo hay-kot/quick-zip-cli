@@ -1,0 +1,45 @@
+site_name: hay-kot | QuickZip
+repo_url: https://github.com/hay-kot/quick_zip
+repo_name: hay-kot/quick_zip
+
+plugins:
+  - search
+  - mkdocstrings
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/git-alt
+    logo: fontawesome/regular/folder-open
+  features:
+    - navigation.instant
+    - navigation.expand
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - codehilite
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
+  - javascripts/tables.js
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/hay-kot/wiki
+
+extra_css:
+  - stylesheets/custom.css
+
+nav:
+  - Getting Started:
+      - About: "index.md"
+      - Changelog: "getting-started/changelog.md"
+  - Code:
+      - AppConfig: code/app-config.md
