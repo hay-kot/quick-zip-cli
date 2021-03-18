@@ -4,15 +4,12 @@
         "webhook_address": "https://webhooks.com/webhook",
         "relative_path": "/my/backup/dir"
     },
-    "jobs": [
-        {
-            "DEFAULTS": {
-                "name": "ENTRY",
-                "source": "",
-                "destination": "./nas/backups",
-                "clean_up": false,
-                "keep": 4
-            }
-        }
-    ]
+    "defaults": {
+        "name": "ENTRY",
+        "source": "",
+        "destination": "./nas/backups",
+        "clean_up": false,
+        "keep": 4
+    },
+    "jobs": []
 }

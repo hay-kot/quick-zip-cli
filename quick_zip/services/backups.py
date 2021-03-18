@@ -13,15 +13,21 @@ from services.file_stats import get_stats
 def get_all_stats(path: Path) -> dict:
     my_stats = {"name": path.name}
     my_stats.update(get_stats(path))
-    return my_stats
+    return
+
+
+def get_deletes(directory: Path, keep: int) -> list[Path]:
+    clean_list = sorted(directory.iterdir(), key=os.path.getmtime, reverse=True)
+    deletes = [x for x in clean_list if x.is_file()]
+    return deletes[keep:]
 
 
 def clean_up_dest(directory: Path, keep: int, name: str = "") -> list[Path]:
-    logger.debug(name)
-    clean_list = sorted(directory.iterdir(), key=os.path.getmtime)
-    clean_list = [x for x in clean_list if x.is_file()]
+    logger.info(f"Cleaning Directory: {directory.name}")
+    logger.info(f"Keeping... {keep}")
+    clean_list = get_deletes(directory, keep)
 
-    for file in clean_list[keep:]:
+    for file in clean_list:
         file.unlink()
 
     backups = [get_all_stats(x) for x in directory.iterdir()]
@@ -49,7 +55,9 @@ def run_job(job: BackupJob) -> dict:
         dest = Path(shutil.copy(job.source, f"{dest}{job.source.suffix}"))
 
     else:
-        raise Exception(f"Fatal Error: {job.source} is not file or folder")
+        raise Exception(
+            f"Fatal Error: {job.source} is not file or folder... What is it?"
+        )
 
     all_backups = clean_up_dest(job.destination, job.keep, job.name)
 

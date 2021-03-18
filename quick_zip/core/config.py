@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from pydantic.main import BaseModel
+from schema.backup_job import BackupJob
 from schema.config import AppConfig
 
 BASE_DIR = Path(__file__).parent.parent
@@ -17,4 +18,9 @@ def generate_config(config_file):
     return AppConfig.from_file(config_file)
 
 
+def generate_defaults(config_file):
+    return BackupJob.get_defaults(config_file)
+
+
+defaults = generate_defaults(CONFIG_FILE)
 config = generate_config(CONFIG_FILE)

@@ -4,7 +4,12 @@ repo_name: hay-kot/quick_zip
 
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append("quick_zip")
 
 theme:
   name: material
@@ -42,4 +47,5 @@ nav:
       - About: "index.md"
       - Changelog: "getting-started/changelog.md"
   - Code:
-      - AppConfig: code/app-config.md
+      - AppConfig: "code/app-config.md"
+      - BackupJob: "code/backup-job.md"

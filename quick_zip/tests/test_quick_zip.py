@@ -5,13 +5,11 @@ import pytest
 from core.config import APP_VERSION, CONFIG_FILE, generate_config
 from schema.backup_job import BackupJob, BackupResults
 from schema.config import AppConfig
-from services.backups import run_job
+from services.backups import get_deletes, run_job
 
 CWD = Path(__file__).parent
 RESOURCES = CWD.joinpath("resources")
 DEST = RESOURCES.joinpath("dest")
-
-shutil.rmtree(DEST, ignore_errors=True)
 
 
 @pytest.fixture()
@@ -21,8 +19,45 @@ def job_store():
     )
 
 
+@pytest.fixture()
+def temp_dir():
+    temp_dir = RESOURCES.joinpath(".temp")
+    yield temp_dir
+    shutil.rmtree(temp_dir, ignore_errors=True)
+
+
 def test_version():
     assert APP_VERSION == "v0.1.0"
+
+
+def test_keep_sort():
+    """ 1 is the oldest, 5 is the newest"""
+    test_dir = DEST.joinpath("sort")
+    one = test_dir.joinpath("1.txt")
+    two = test_dir.joinpath("2.txt")
+    three = test_dir.joinpath("3.txt")
+    four = test_dir.joinpath("4.txt")
+    _five = test_dir.joinpath("5.txt")
+
+    deletes = get_deletes(test_dir, 1)
+    expected = [one, two, three, four]
+    assert set(deletes) == set(expected)
+
+    deletes = get_deletes(test_dir, 2)
+    expected = [one, two, three]
+    assert set(deletes) == set(expected)
+
+    deletes = get_deletes(test_dir, 3)
+    expected = [one, two]
+    assert set(deletes) == set(expected)
+
+    deletes = get_deletes(test_dir, 4)
+    expected = [one]
+    assert set(deletes) == set(expected)
+
+    deletes = get_deletes(test_dir, 5)
+    expected = []
+    assert set(deletes) == set(expected)
 
 
 class ConfigTests:
@@ -61,15 +96,14 @@ class BackupJobTests:
         assert all([isinstance(x, BackupJob) for x in job_store])
 
     @staticmethod
-    def test_contents(job_store):
+    def test_contents(job_store, temp_dir):
         data: BackupResults = run_job(job_store)
         assert data
 
-        out_dir = RESOURCES.joinpath(".temp")
-        out_dir.mkdir(parents=True, exist_ok=True)
-        shutil.unpack_archive(data.file, out_dir)
+        temp_dir.mkdir(parents=True, exist_ok=True)
+        shutil.unpack_archive(data.file, temp_dir)
 
-        with open(out_dir.joinpath("my_files.txt"), "r") as f:
+        with open(temp_dir.joinpath("my_files.txt"), "r") as f:
             content = f.read()
 
         assert content == "this is my test file contents"
