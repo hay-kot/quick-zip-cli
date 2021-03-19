@@ -17,7 +17,6 @@ class AppConfig(BaseModel):
 
     enable_webhooks: bool
     webhook_address: str
-    relative_path: Path
 
     @classmethod
     def from_file(cls, file: Path):

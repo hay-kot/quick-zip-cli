@@ -1,7 +1,10 @@
 import errno
 import json
 import shutil
-import urllib.request
+
+import requests
+
+from quick_zip.schema.backup_job import PostData
 
 
 def copyanything(src, dst):
@@ -14,11 +17,6 @@ def copyanything(src, dst):
             raise
 
 
-def post_file_data(url, body):
-    req = urllib.request.Request(url)
-    req.add_header("Content-Type", "application/json; charset=utf-8")
-    jsondata = json.dumps(body)
-    json_data_as_bytes = jsondata.encode("utf-8")
-    req.add_header("Content-Length", len(json_data_as_bytes))
-
-    urllib.request.urlopen(req, json_data_as_bytes)
+def post_file_data(url, body: PostData):
+    headers = {"Content-Type": "application/json", "Accept": "application/json"}
+    requests.post(url, json=body.json(), headers=headers, timeout=5, verify=False)

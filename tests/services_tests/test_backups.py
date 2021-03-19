@@ -1,11 +1,8 @@
 import shutil
 from pathlib import Path
 
-from quick_zip.core.config import CONFIG_FILE, generate_config
 from quick_zip.schema.backup_job import BackupJob, BackupResults
-from quick_zip.schema.config import AppConfig
 from quick_zip.services.backups import get_deletes, run_job
-from tests.conftest import resource_dir
 
 
 def test_keep_sort(dest_dir):
@@ -50,6 +47,18 @@ class BackupJobTests:
         assert job_store.clean_up == False
         assert job_store.all_files == False
         assert job_store.keep == 4
+
+    @staticmethod
+    def test_replace_variables(config_with_vars: Path):
+        VAR_1 = "var_1_value"
+        VAR_2 = "var_2_value"
+        job_store = BackupJob.get_job_store(config_with_vars)
+
+        job = job_store[0]
+
+        assert job.name == f"{VAR_1}"
+        assert job.source == Path(f"/{VAR_2}/entry_1/{VAR_2}")
+        assert job.destination == Path(f"/home/entry_1/{VAR_2}")
 
     @staticmethod
     def test_get_job_store(resource_dir):

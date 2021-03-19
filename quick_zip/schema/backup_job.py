@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
-
 from pydantic import BaseModel
-
 from quick_zip.schema.file_system import FileStat
 
 
@@ -30,6 +29,9 @@ class BackupJob(BaseModel):
     clean_up: bool = False
     clean_up_source: bool = False
     keep: int = 4
+    audit: bool = False,
+    results: str = "not set"
+    oldest: int = 7
 
     def __repr__(self) -> str:
         return f"""
@@ -42,6 +44,12 @@ class BackupJob(BaseModel):
         keep: {self.keep} 
         
         """
+
+    @property
+    def final_dest(self):
+        dir = self.destination.joinpath(self.name)
+        dir.mkdir(parents=True, exist_ok=True)
+        return dir
 
     @classmethod
     def get_defaults(cls, file: Path) -> BackupJob:
@@ -63,6 +71,21 @@ class BackupJob(BaseModel):
             raise Exception("No Default Arguments")
 
     @staticmethod
+    def _find_replace_vars(content: str, vars: dict):
+        for key, value in vars.items():
+            match_str = r"\$\{" + key + r"\}"
+            content = re.sub(match_str, value, content)
+
+        match_str = r"\$\{.*\}"
+
+        if match := re.search(match_str, content):
+            raise Exception(
+                f"Undefined Variable Detected in the configuration file `{match.group()}`"
+            )
+
+        return content
+
+    @staticmethod
     def get_job_store(config: Path) -> list[BackupJob]:
         """A Helper function to read the "jobs" key of the configuration
         file and return a list of BackupJob Objects.
@@ -75,7 +98,14 @@ class BackupJob(BaseModel):
         """
 
         with open(config, "r") as f:
-            content: list[dict] = json.loads(f.read()).get("jobs")
+            raw_content = f.read()
+
+        vars: dict = json.loads(raw_content).get("vars", False)
+        if vars:
+            content = BackupJob._find_replace_vars(raw_content, vars)
+            content = json.loads(content).get("jobs")
+        else:
+            content: list[dict] = json.loads(raw_content).get("jobs")
 
         return [BackupJob(**job) for job in content]
 
@@ -93,3 +123,7 @@ class BackupResults(BaseModel):
     name: str
     file: Path
     stats: FileStat
+
+
+class PostData(BaseModel):
+    data: list[BackupResults]

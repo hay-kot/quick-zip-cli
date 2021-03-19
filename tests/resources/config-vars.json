@@ -1,8 +1,11 @@
 {
     "config": {
         "enable_webhooks": true,
-        "webhook_address": "https://10.10.10.93:8123/api/webhook/tXpVcw2Cc6BG2stM6xa7kycauFGljuiL",
-        "relative_path": "/my/backup/dir"
+        "webhook_address": "https://webhooks.com/webhook"
+    },
+    "vars": {
+        "VAR_1": "var_1_value",
+        "VAR_2": "var_2_value"
     },
     "defaults": {
         "name": "ENTRY",
@@ -13,9 +16,9 @@
     },
     "jobs": [
         {
-            "name": "entry_1",
-            "source": "/home/entry_1",
-            "destination": "/home/entry_1/backups",
+            "name": "${VAR_1}",
+            "source": "/${VAR_2}/entry_1/${VAR_2}",
+            "destination": "/home/entry_1/${VAR_2}",
             "clean_up": false
         },
         {

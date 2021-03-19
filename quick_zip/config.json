@@ -1,8 +1,10 @@
 {
     "config": {
         "enable_webhooks": false,
-        "webhook_address": "https://webhooks.com/webhook",
-        "relative_path": "/my/backup/dir"
+        "webhook_address": "https://webhooks.com/webhook"
+    },
+    "vars": {
+        "DATA_DIR": "./data"
     },
     "defaults": {
         "name": "ENTRY",
@@ -10,13 +12,29 @@
         "destination": "/backups",
         "clean_up": false,
         "clean_up_source": false,
-        "keep": 4
+        "keep": 4,
+        "audit": true,
+        "oldest": 7
     },
     "jobs": [
         {
-            "name": "Home Assistant",
-            "source": "/Users/hayden/desktop/Home Assistant/src",
-            "destination": "/Users/hayden/desktop/Home Assistant/dest",
+            "name": "Dev Backup",
+            "source": "${DATA_DIR}/src",
+            "destination": "${DATA_DIR}/dest",
+            "clean_up": true,
+            "clean_up_source": true
+        },
+        {
+            "name": "Dev Backup 2",
+            "source": "${DATA_DIR}/src",
+            "destination": "${DATA_DIR}/dest",
+            "clean_up": true,
+            "clean_up_source": true
+        },
+        {
+            "name": "Dev Backup 3",
+            "source": "${DATA_DIR}/src",
+            "destination": "${DATA_DIR}/dest",
             "clean_up": true,
             "clean_up_source": true
         }

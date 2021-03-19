@@ -1,6 +1,6 @@
 site_name: hay-kot | QuickZip
-repo_url: https://github.com/hay-kot/quick_zip
-repo_name: hay-kot/quick_zip
+repo_url: https://github.com/hay-kot/quick-zip-cli
+repo_name: hay-kot/quick-zip-cli
 
 plugins:
   - search
@@ -24,28 +24,32 @@ theme:
     - navigation.tabs.sticky
 
 markdown_extensions:
+  - admonition
+  - codehilite
+  - extra
   - attr_list
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tasklist:
       custom_checkbox: true
-  - admonition
-  - codehilite
-  - def_list
-extra_javascript:
-  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
-  - javascripts/tables.js
+
 extra:
   social:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/hay-kot/wiki
 
 extra_css:
-  - stylesheets/custom.css
+  - "css/termynal.css"
+  - "css/custom.css"
 
+extra_javascript:
+  - "js/termynal.js"
+  - "js/custom.js"
 nav:
   - Getting Started:
       - About: "index.md"
+      - Quick Start: "getting-started/quick-start.md"
+      - Usage Examples: "getting-started/usage-examples.md"
       - Config File: "getting-started/configuration-file.md"
       - Changelog: "getting-started/changelog.md"
   - Code:

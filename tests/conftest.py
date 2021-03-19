@@ -10,20 +10,26 @@ DEST = RESOURCES.joinpath("dest")
 
 
 @pytest.fixture
+def job_store():
+    return BackupJob(
+        name="Test Job", source=RESOURCES.joinpath("src"), destination=DEST
+    )
+
+
+@pytest.fixture
+def config_with_vars():
+    return RESOURCES.joinpath("config-vars.json")
+
+
+@pytest.fixture
 def resource_dir():
     return RESOURCES
 
 
 @pytest.fixture
 def dest_dir():
-    return DEST
-
-
-@pytest.fixture()
-def job_store():
-    return BackupJob(
-        name="Test Job", source=RESOURCES.joinpath("src"), destination=DEST
-    )
+    yield DEST
+    [x.unlink() for x in DEST.glob("*.zip")]
 
 
 @pytest.fixture()

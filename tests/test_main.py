@@ -15,9 +15,7 @@ class ConfigTests:
         test_config = AppConfig(
             enable_webhooks=False,
             webhook_address="https://webhooks.com/webhook",
-            relative_path="/my/backup/dir",
         )
 
         assert app_config.enable_webhooks == test_config.enable_webhooks
         assert app_config.webhook_address == test_config.webhook_address
-        assert app_config.relative_path == test_config.relative_path

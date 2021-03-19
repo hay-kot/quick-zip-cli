@@ -20,6 +20,25 @@ The main configuration for QuickZip.
 },
 ```
 
+### `vars`
+
+The vars key is an object of key/value pairs that are used can be used as variables within the `jobs` key. 
+
+```json
+"vars": {
+    "DATA_DIR": "/users/home/username/desktop",
+},
+"jobs": [
+    {
+        "name": "Dev Backup",
+        "source": "${DATA_DIR}/src", -> "/users/home/username/desktop/src"
+        "destination": "${DATA_DIR}/dest", -> "/users/home/username/desktop/src"
+        "clean_up": true,
+        "clean_up_source": true
+    }
+]
+```
+
 ### `default`
 
 The default values for jobs when values are not specified. 
