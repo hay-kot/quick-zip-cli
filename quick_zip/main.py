@@ -1,7 +1,10 @@
+import json
 from pathlib import Path
+from typing import Optional
 
 import typer
 from rich.console import Console
+from rich.syntax import Syntax
 
 from quick_zip.core.config import CONFIG_FILE
 from quick_zip.schema.backup_job import BackupJob
@@ -25,6 +28,28 @@ def clean_up():
     logger.info("-------- FINISHED --------")
 
     pass
+
+
+@app.command()
+def config(
+    config_file: Optional[str] = typer.Argument(CONFIG_FILE),
+    filter: Optional[str] = typer.Option(None, "-f"),
+):
+    if isinstance(config_file, str):
+        config_file = Path(config_file)
+
+    # config: AppConfig = AppConfig.from_file(config_file)
+    # all_jobs = BackupJob.get_job_store(config_file)
+
+    with open(config_file, "r") as f:
+        content = f.read()
+
+    if filter:
+        temp_dict = json.loads(content).get(filter)
+        content = json.dumps(temp_dict, indent=4)
+
+    syntax = Syntax(content, "json", theme="material", line_numbers=True)
+    console.print(syntax)
 
 
 @app.command()
@@ -61,6 +86,9 @@ def other(name):
     console.print("Hello", f"{name}", style="bold red")
 
 
-if __name__ == "__main__":
+def main():
     app()
-    # main(config)
+
+
+if __name__ == "__main__":
+    main()

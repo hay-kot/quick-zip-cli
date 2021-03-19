@@ -1,5 +1,3 @@
-[tool.poetry.scripts]
-quick_zip = "quick_zip:main.py"
 
 [tool.poetry]
 name = "quick_zip"
@@ -9,7 +7,7 @@ authors = ["hay-kot <hay-kot@pm.me>"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-ra -q"
+addopts = "-ra -q --cov=quick_zip"
 python_files = 'test_*'
 python_classes = '*Tests'
 python_functions = 'test_*'
@@ -29,6 +27,11 @@ pylint = "^2.7.2"
 mkdocs-material = "^7.0.6"
 mkdocstrings = "^0.15.0"
 pytest = "^6.2.2"
+pytest-cov = "^2.11.1"
+
+[tool.poetry.scripts]
+cli = "quick_zip.main:main"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
