@@ -57,12 +57,13 @@ Also, I just like building stuff.
 
 ## To Do's
 - [x] Fix animated terminals for docs
-- [x] Use variables in config file
 - [x] Only run some jobs
 - [x] Read config path from .env
 - [x] CLI implementation
-- [ ] Auditor Commands
+- [x] Auditor Commands
 - [ ] Job Configuration
+    - [ ] Set default values
+    - [x] Use variables in config file
     - [ ] Add property for glob style matching
     - [ ] Pass list of files to zip in config file.
     - [ ] Git Repo Backup

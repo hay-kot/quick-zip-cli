@@ -58,24 +58,23 @@ Commands:
 <div class="termy">
 
 ```console
-
 $ quick-zip run
-────────── QuickZip: 'Dev Backup' ──────────
-Creating: Dev Backup_2021.03.19_12.24.03
-Zipping 'data/src'
-Cleaning Directory: Dev Backup
-Keeping... 4
-Dropping... Dev Backup_2021.03.19_12.21.29.zip
-Cleaning Directory: src
-Keeping... 4
-────────── QuickZip: 'Dev Backup 2' ──────────
-Creating: Dev Backup 2_2021.03.19_12.24.03
-Zipping 'data/src'
-Cleaning Directory: Dev Backup 2
-Keeping... 4
-Dropping... Dev Backup 2_2021.03.19.zip
-Cleaning Directory: src
-Keeping... 4
+───────────── QuickZip: 'Dev Backup 3' ─────────────
+Creating: Dev Backup 3_2021.03.19_23.36.37
+
+            Audit Report `Dev Backup 3`
+╭────── Dev Backup 3_2021.03.19_23.35.44.zip ──────╮
+│ 100.03 MB                                        │
+│ Parent: Dev Backup 3                             │
+│ Days Old 0                                       │
+╰──────────────────────────────────────────────────╯
+
+               🗑  Cleanup 'data/dest'
+╭─ Dev Backup 3_2021.03.19.zip ─╮
+│ Deleted                       │
+│ Parent: Dev Backup 3          │
+│ From Source                   │
+╰───────────────────────────────╯
 
 ```
 
