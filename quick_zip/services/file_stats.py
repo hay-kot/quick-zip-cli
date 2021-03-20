@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -12,6 +13,14 @@ def sizeof_fmt(size, decimal_places=2):
 
 def format_time(timestamp):
     return datetime.fromtimestamp(timestamp).strftime("%b %d, %Y")
+
+
+def get_days_old(path: Path) -> int:
+    time_create = datetime.fromtimestamp(int(os.stat(path).st_birthtime))
+    time_now = datetime.now()
+    difference = time_now - time_create
+    duration_in_s = difference.total_seconds() // 86400  # Second in a Day
+    return int(duration_in_s)
 
 
 def get_stats(file_folder: Path) -> dict:

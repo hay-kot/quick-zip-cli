@@ -12,9 +12,9 @@
         "destination": "/backups",
         "clean_up": false,
         "clean_up_source": false,
-        "keep": 4,
+        "keep": 1,
         "audit": true,
-        "oldest": 7
+        "oldest": 0
     },
     "jobs": [
         {

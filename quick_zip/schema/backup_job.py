@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from typing import Optional
 
 from pydantic import BaseModel
 from quick_zip.schema.file_system import FileStat
@@ -28,9 +29,8 @@ class BackupJob(BaseModel):
     all_files: bool = False
     clean_up: bool = False
     clean_up_source: bool = False
-    keep: int = 4
+    keep: int = 1
     audit: bool = False,
-    results: str = "not set"
     oldest: int = 7
 
     def __repr__(self) -> str:
@@ -110,6 +110,17 @@ class BackupJob(BaseModel):
         return [BackupJob(**job) for job in content]
 
 
+class BackupFile(BaseModel):
+    path: Path
+    days_old: int
+
+
+class Audit(BaseModel):
+    healthy: bool
+    newest: BackupFile 
+    oldest: BackupFile
+
+
 class BackupResults(BaseModel):
     """Results returned for each job ccompleted
 
@@ -119,10 +130,11 @@ class BackupResults(BaseModel):
         stats: FileStat
 
     """
-
     name: str
     file: Path
     stats: FileStat
+    job: BackupJob
+    audit: Optional[Audit]
 
 
 class PostData(BaseModel):

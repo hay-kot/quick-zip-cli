@@ -2,7 +2,7 @@ import shutil
 from pathlib import Path
 
 from quick_zip.schema.backup_job import BackupJob, BackupResults
-from quick_zip.services.backups import get_deletes, run_job
+from quick_zip.services.backups import get_deletes, run
 
 
 def test_keep_sort(dest_dir):
@@ -67,7 +67,7 @@ class BackupJobTests:
 
     @staticmethod
     def test_contents(job_store, temp_dir):
-        data: BackupResults = run_job(job_store)
+        data: BackupResults = run(job_store)
         assert data
 
         temp_dir.mkdir(parents=True, exist_ok=True)

@@ -3,7 +3,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from pydantic.main import BaseModel
-from quick_zip.schema.backup_job import BackupJob
 from quick_zip.schema.config import AppConfig
 from rich.console import Console
 from rich.traceback import install
@@ -31,9 +30,4 @@ def generate_config(config_file):
     return AppConfig.from_file(config_file)
 
 
-def generate_defaults(config_file):
-    return BackupJob.get_defaults(config_file)
-
-
 CONFIG_FILE = determine_config_file()
-defaults = generate_defaults(CONFIG_FILE)

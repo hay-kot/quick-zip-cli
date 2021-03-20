@@ -52,9 +52,23 @@ def config(
 
 
 @app.command()
-def audit():
+def audit(
+    config_file: str = typer.Argument(CONFIG_FILE),
+    job: Optional[list[str]] = typer.Option(None, "-j"),
+):
     """🧐 Performs ONLY the audits for configured jobs"""
-    auditer.audit()
+    if isinstance(config_file, str):
+        config_file = Path(config_file)
+        config: AppConfig = AppConfig.from_file(config_file)
+
+    all_jobs = BackupJob.get_job_store(config_file)
+
+    if job:
+        all_jobs = [x for x in all_jobs if x.name in job]
+
+    for my_job in all_jobs:
+        my_job: BackupJob
+        audit_report = auditer.audit(my_job.final_dest, my_job.oldest)
 
 
 @app.command()
@@ -77,14 +91,10 @@ def run(
 
     with console.status("[bold green]Generating ZipFile...") as _status:
         for job in all_jobs:
+            job: BackupJob
             console.rule(f"QuickZip: '{job.name}'")
-            report = backups.run_job(job)
+            report = backups.run(job)
 
-            if job.clean_up:
-                backups.clean_up_dest(job.final_dest, job.keep, job.name)
-
-            if job.clean_up_source:
-                backups.clean_up_dest(job.source, job.keep, job.name)
             reports.append(report)
 
     if config.enable_webhooks:
