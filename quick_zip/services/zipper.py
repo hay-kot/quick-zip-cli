@@ -5,9 +5,8 @@ from pathlib import Path
 
 from quick_zip.core.config import ZIP_TYPES, console
 from quick_zip.schema.backup_job import BackupJob, BackupResults
-from quick_zip.services import auditer
-from quick_zip.services.file_stats import get_stats
-from quick_zip.utils import cards
+from quick_zip.services import auditer, ui
+from quick_zip.utils import fstats
 from rich.columns import Columns
 from rich.layout import Panel
 
@@ -45,13 +44,13 @@ def run(job: BackupJob) -> dict:
         audit_report = auditer.audit(job.final_dest, job.oldest)
 
     clean_up_cards = [
-        cards.file_card(x, title_color="red", append_text="[i]From Source")
+        ui.file_card(x, title_color="red", append_text="[i]From Source")
         for x in dest_clean
     ]
 
     for file in src_clean:
         clean_up_cards.append(
-            cards.file_card(file, title_color="red", append_text="[i]From Destionation")
+            ui.file_card(file, title_color="red", append_text="[i]From Destionation")
         )
 
     console.print(f"\n[b]🗑  Cleanup '{job.destination}'", justify="center")
@@ -62,14 +61,14 @@ def run(job: BackupJob) -> dict:
         name=job.name,
         job=job,
         file=dest,
-        stats=get_stats(dest).get("stats"),
+        stats=fstats.get_stats(dest).get("stats"),
         audit=audit_report,
     )
 
 
 def get_all_stats(path: Path) -> dict:
     my_stats = {"name": path.name}
-    my_stats.update(get_stats(path))
+    my_stats.update(fstats.get_stats(path))
     return
 
 

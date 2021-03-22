@@ -4,7 +4,7 @@ from rich.columns import Columns
 from rich.console import Console
 from rich.layout import Panel
 
-from quick_zip.services.file_stats import get_days_old, sizeof_fmt
+from quick_zip.utils import fstats
 
 
 def file_panel(my_path: Path, title=None, title_color=None, append_text=None):
@@ -17,7 +17,7 @@ def file_panel(my_path: Path, title=None, title_color=None, append_text=None):
 
     # File Stats
     raw_stats = my_path.stat()
-    size = sizeof_fmt(raw_stats.st_size)
+    size = fstats.sizeof_fmt(raw_stats.st_size)
 
     content = f"""{emoji} {size}
 Parent: {my_path.parent.name}

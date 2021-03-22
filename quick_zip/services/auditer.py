@@ -2,8 +2,8 @@ from pathlib import Path
 
 from quick_zip.core.config import console
 from quick_zip.schema.backup_job import Audit, BackupFile
-from quick_zip.services.file_stats import get_days_old
-from quick_zip.utils import cards
+from quick_zip.utils import fstats
+from quick_zip.services import ui
 from rich.columns import Columns
 
 
@@ -12,7 +12,7 @@ def audit(destination: Path, oldest_by_days: int) -> Audit:
 
     all_files = []
     for file in destination.iterdir():
-        all_files.append(BackupFile(path=file, days_old=get_days_old(file)))
+        all_files.append(BackupFile(path=file, days_old=fstats.get_days_old(file)))
 
     all_files.sort(key=lambda x: x.days_old)
 
@@ -27,7 +27,7 @@ def audit(destination: Path, oldest_by_days: int) -> Audit:
         color = "green" if health else "red"
         append_text = f"""[b {color}]{file.days_old} Days Old[/]"""
         my_cards.append(
-            cards.file_card(file.path, title_color=color, append_text=append_text)
+            ui.file_card(file.path, title_color=color, append_text=append_text)
         )
 
     content = Columns(my_cards, equal=False, expand=True)

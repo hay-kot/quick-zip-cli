@@ -45,14 +45,7 @@ I can't comment on every backup utility but I can mention the few that I looked 
 - Backup Audits: The ability to "audit" backups and specify how old the newest backup should be 
 - Webhook Support: Send backup data to Home Assistant for notifications and dashboards. 
 
-Also, I just like building stuff. 
-
-
-
-
-
-## Not Yet Implemented Commands
-* `quickzip audit` - Audits the destination directories and generates a report
+Also, I just like building stuff. 👍
 
 
 ## To Do's

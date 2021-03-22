@@ -1,8 +1,6 @@
 {
   "python.formatting.provider": "black",
   "python.pythonPath": ".venv/bin/python",
-  "python.autoComplete.extraPaths": ["quick_zip"],
-  "python.analysis.extraPaths": ["quick_zip"],
   "python.testing.pytestArgs": ["tests"],
   "python.testing.unittestEnabled": false,
   "python.testing.nosetestsEnabled": false,

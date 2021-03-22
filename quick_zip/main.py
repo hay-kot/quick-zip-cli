@@ -3,15 +3,17 @@ from pathlib import Path
 from typing import Optional
 
 import typer
+from rich.columns import Columns
 from rich.syntax import Syntax
 
+from quick_zip.commands import jobs
 from quick_zip.core.config import CONFIG_FILE, console
 from quick_zip.schema.backup_job import BackupJob, PostData
 from quick_zip.schema.config import AppConfig
-from quick_zip.services import auditer, backups
-from quick_zip.utils.backup import post_file_data
+from quick_zip.services import auditer, ui, web, zipper
 
 app = typer.Typer()
+app.add_typer(jobs.app, name="jobs")
 
 
 @app.command()
@@ -55,6 +57,7 @@ def config(
 def audit(
     config_file: str = typer.Argument(CONFIG_FILE),
     job: Optional[list[str]] = typer.Option(None, "-j"),
+    verbose: Optional[bool] = typer.Argument("-v"),
 ):
     """🧐 Performs ONLY the audits for configured jobs"""
     if isinstance(config_file, str):
@@ -66,9 +69,10 @@ def audit(
     if job:
         all_jobs = [x for x in all_jobs if x.name in job]
 
-    for my_job in all_jobs:
-        my_job: BackupJob
-        audit_report = auditer.audit(my_job.final_dest, my_job.oldest)
+    if verbose:
+        for my_job in all_jobs:
+            my_job: BackupJob
+            audit_report = auditer.audit(my_job.final_dest, my_job.oldest)
 
 
 @app.command()
@@ -93,12 +97,12 @@ def run(
         for job in all_jobs:
             job: BackupJob
             console.rule(f"QuickZip: '{job.name}'")
-            report = backups.run(job)
+            report = zipper.run(job)
 
             reports.append(report)
 
     if config.enable_webhooks:
-        post_file_data(config.webhook_address, body=PostData(data=reports))
+        web.post_file_data(config.webhook_address, body=PostData(data=reports))
 
 
 def main():

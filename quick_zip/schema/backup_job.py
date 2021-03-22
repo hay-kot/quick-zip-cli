@@ -29,8 +29,8 @@ class BackupJob(BaseModel):
     all_files: bool = False
     clean_up: bool = False
     clean_up_source: bool = False
-    keep: int = 1
-    audit: bool = False,
+    keep: int = 4
+    audit: bool = True
     oldest: int = 7
 
     def __repr__(self) -> str:
@@ -117,7 +117,7 @@ class BackupFile(BaseModel):
 
 class Audit(BaseModel):
     healthy: bool
-    newest: BackupFile 
+    newest: BackupFile
     oldest: BackupFile
 
 
@@ -130,6 +130,7 @@ class BackupResults(BaseModel):
         stats: FileStat
 
     """
+
     name: str
     file: Path
     stats: FileStat

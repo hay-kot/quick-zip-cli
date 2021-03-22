@@ -37,6 +37,13 @@
             "destination": "${DATA_DIR}/dest",
             "clean_up": true,
             "clean_up_source": true
+        },
+        {
+            "name": "Dev Backup 4",
+            "source": "${DATA_DIR}/src",
+            "destination": "${DATA_DIR}/dest",
+            "clean_up": true,
+            "clean_up_source": true
         }
     ]
 }
