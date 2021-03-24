@@ -1,7 +1,7 @@
 # About the Project
 
 
-!!! warning "This is a work in progress. Use at your own risk."
+!!! warning "This is a work in progress and not currently published. Use at your own risk."
 
 ## What QuickZip Is
 QuickZip is a CLI utility I developed to solve a backup problem on my machines. I wanted a way to quickly backup up small sets of configuration files and data without deploying a massive, hard to maintain tool with too much front-end configuration. QuickZip uses a config.json file to build tiny list of backups that are conducted when called (typically via cron). 
