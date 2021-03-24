@@ -1,7 +1,12 @@
 {
     "config": {
         "enable_webhooks": false,
-        "webhook_address": "https://webhooks.com/webhook"
+        "webhook_address": "https://webhooks.com/webhook",
+        "zip_types": [
+            ".tar.gz",
+            ".bz2",
+            ".zip"
+        ]
     },
     "vars": {
         "DATA_DIR": "./data"
@@ -19,28 +24,38 @@
     "jobs": [
         {
             "name": "Dev Backup",
-            "source": "${DATA_DIR}/src",
+            "source": [
+                "${DATA_DIR}/src/test_data",
+                "${DATA_DIR}/src/test_data copy",
+                "${DATA_DIR}/src/text.txt"
+            ],
             "destination": "${DATA_DIR}/dest",
             "clean_up": true,
             "clean_up_source": true
         },
         {
             "name": "Dev Backup 2",
-            "source": "${DATA_DIR}/src",
+            "source": [
+                "${DATA_DIR}/src"
+            ],
             "destination": "${DATA_DIR}/dest",
             "clean_up": true,
             "clean_up_source": true
         },
         {
             "name": "Dev Backup 3",
-            "source": "${DATA_DIR}/src",
+            "source": [
+                "${DATA_DIR}/src"
+            ],
             "destination": "${DATA_DIR}/dest",
             "clean_up": true,
             "clean_up_source": true
         },
         {
             "name": "Dev Backup 4",
-            "source": "${DATA_DIR}/src",
+            "source": [
+                "${DATA_DIR}/src"
+            ],
             "destination": "${DATA_DIR}/dest",
             "clean_up": true,
             "clean_up_source": true
