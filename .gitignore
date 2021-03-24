@@ -5,6 +5,7 @@ __pycache__/
 .venv 
 *.zip
 /data/src/*
+.DS_Store
 
 # C extensions
 *.so
@@ -107,3 +108,4 @@ ENV/
 
 # IDE settings
 # .vscode/
+quick_zip/services/zipper.py
