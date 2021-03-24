@@ -46,6 +46,7 @@ def run(
 
     for job in all_jobs:
         job: BackupJob
+        console.print()
         console.rule(f"QuickZip: '{job.name}'")
         report = zipper.run(job)
 
