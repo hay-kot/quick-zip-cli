@@ -14,7 +14,7 @@
     "jobs": [
         {
             "name": "entry_1",
-            "source": "/home/entry_1",
+            "source": ["/home/entry_1"],
             "destination": "/home/entry_1/backups",
             "clean_up": false
         },

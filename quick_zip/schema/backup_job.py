@@ -24,14 +24,14 @@ class BackupJob(BaseModel):
     """
 
     name: str
-    source: Path
+    source: list[Path]
     destination: Path
     all_files: bool = False
     clean_up: bool = False
     clean_up_source: bool = False
     keep: int = 4
     audit: bool = True
-    oldest: int = 7
+    oldest: int = -1
 
     def __repr__(self) -> str:
         return f"""
@@ -79,9 +79,7 @@ class BackupJob(BaseModel):
         match_str = r"\$\{.*\}"
 
         if match := re.search(match_str, content):
-            raise Exception(
-                f"Undefined Variable Detected in the configuration file `{match.group()}`"
-            )
+            raise Exception(f"Undefined Variable Detected in the configuration file `{match.group()}`")
 
         return content
 

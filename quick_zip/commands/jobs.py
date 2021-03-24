@@ -1,16 +1,12 @@
-import json
 from pathlib import Path
-from typing import Optional
 
 import typer
-from quick_zip.core.config import CONFIG_FILE, console
-from quick_zip.schema.backup_job import BackupJob, PostData
-from quick_zip.schema.config import AppConfig
-from quick_zip.services import auditer, ui, web, zipper
+from quick_zip.core.settings import CONFIG_FILE, console
+from quick_zip.schema.backup_job import BackupJob
+from quick_zip.services import ui
 from rich.columns import Columns
-from rich.console import Console
-from rich.syntax import Syntax
 from rich.table import Table
+from rich import box
 
 app = typer.Typer()
 
@@ -33,16 +29,11 @@ def main(
 
     else:
         console.print("\n")
-        table = Table(show_header=True, header_style="bold", title="Job Summary")
+        table = Table(show_header=True, header_style="bold", title="Job Summary", box=box.SIMPLE)
         table.add_column("Name", style="bold green", width=12)
-        table.add_column("Source")
-        table.add_column("Destination")
+        table.add_column("Source", justify="center")
+        table.add_column("Destination", justify="center")
         table.add_column("All Files", justify="center")
-        table.add_column("Clean up Dst", justify="center")
-        table.add_column("Clean up Src", justify="center")
-        table.add_column("Keep", justify="center")
-        table.add_column("Audit", justify="center")
-        table.add_column("Oldest", justify="center")
 
         for job in all_jobs:
             table.add_row(
@@ -50,11 +41,6 @@ def main(
                 job.source.name,
                 job.destination.name,
                 str(job.all_files),
-                str(job.clean_up),
-                str(job.clean_up_source),
-                f"{job.keep} backups",
-                str(job.audit),
-                f"{job.oldest} Days",
             )
 
         console.print(table)

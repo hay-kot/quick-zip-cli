@@ -11,9 +11,7 @@ DEST = RESOURCES.joinpath("dest")
 
 @pytest.fixture
 def job_store():
-    return BackupJob(
-        name="Test Job", source=RESOURCES.joinpath("src"), destination=DEST
-    )
+    return BackupJob(name="Test Job", source=RESOURCES.joinpath("src"), destination=DEST)
 
 
 @pytest.fixture

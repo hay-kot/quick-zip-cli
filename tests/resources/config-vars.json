@@ -17,7 +17,9 @@
     "jobs": [
         {
             "name": "${VAR_1}",
-            "source": "/${VAR_2}/entry_1/${VAR_2}",
+            "source": [
+                "/${VAR_2}/entry_1/${VAR_2}"
+            ],
             "destination": "/home/entry_1/${VAR_2}",
             "clean_up": false
         },

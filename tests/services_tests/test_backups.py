@@ -2,7 +2,7 @@ import shutil
 from pathlib import Path
 
 from quick_zip.schema.backup_job import BackupJob, BackupResults
-from quick_zip.services.backups import get_deletes, run
+from quick_zip.services.zipper import get_deletes, run
 
 
 def test_keep_sort(dest_dir):
@@ -42,7 +42,7 @@ class BackupJobTests:
 
         # Test Default Values
         assert job_store.name == "Test Job"
-        assert job_store.source == resource_dir.joinpath("src")
+        assert job_store.source == [resource_dir.joinpath("src")]
         assert job_store.destination == dest_dir
         assert job_store.clean_up == False
         assert job_store.all_files == False
@@ -57,7 +57,7 @@ class BackupJobTests:
         job = job_store[0]
 
         assert job.name == f"{VAR_1}"
-        assert job.source == Path(f"/{VAR_2}/entry_1/{VAR_2}")
+        assert job.source == [Path(f"/{VAR_2}/entry_1/{VAR_2}")]
         assert job.destination == Path(f"/home/entry_1/{VAR_2}")
 
     @staticmethod
@@ -77,3 +77,12 @@ class BackupJobTests:
             content = f.read()
 
         assert content == "this is my test file contents"
+
+
+def test_glob_sort():
+    data = [
+        "/path/to/data",
+        "/path/to/*"
+        "/my/absolute/path*.tar"
+        "/data/aboslute/data"
+    ]
