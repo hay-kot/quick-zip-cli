@@ -8,8 +8,6 @@ verbose = false
 DATA_DIR = "/Users/hayden/Projects/quick-zip-cli/data"
 
 [defaults]
-name = "ENTRY"
-source = ""
 destination = "/backups"
 clean_up = false
 clean_up_source = false

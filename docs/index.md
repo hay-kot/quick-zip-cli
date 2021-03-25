@@ -12,26 +12,13 @@ QuickZip is a CLI utility I developed to solve a backup problem on my machines. 
  - Backup Audits
  - Webhook Support
 
+
 <div class="termy">
 
 ```console
-$ quick-zip
 
-Usage: quick-zip [OPTIONS] COMMAND [ARGS]...
+--8<-- "docs_src/help.sh"
 
-Options:
-  --install-completion [bash|zsh|fish|powershell|pwsh]
-                                  Install completion for the specified shell.
-  --show-completion [bash|zsh|fish|powershell|pwsh]
-                                  Show completion for the specified shell, to
-                                  copy it or customize the installation.
-
-  --help                          Show this message and exit.
-
-Commands:
-  config  ✏️ Used to read the current configuration
-  docs    💬 Opens up the CLI Documentation
-  run     ✨ The main entrypoint for the application.
 ```
 
 </div>
@@ -54,6 +41,7 @@ Also, I just like building stuff. 👍
 - [x] Read config path from .env
 - [x] CLI implementation
 - [x] Auditor Commands
+- [ ] Update Documentation
 - [ ] Job Configuration
     - [x] Set default values
     - [x] Use variables in config file
@@ -61,11 +49,10 @@ Also, I just like building stuff. 👍
     - [x] Pass list of files to zip in config file.
     - [ ] Git Repo Backup
     - [ ] Web Download Backup
-- [ ] Tests
-  - [ ] Reading .toml file
-  - [ ] Find/Replace Vars
-  - [ ] Glob Matching
-  - [ ] Validate Input/Output
+- [x] Tests
+    - [x] Reading .toml file
+    - [x] Find/Replace Vars
+    - [x] Validate Input/Output
 - [ ] Release v0.1.0
     - [ ] Poetry Package
 - [ ] Encrypted Zip Files

@@ -37,5 +37,5 @@ def config(
 
         content = json.dumps(temp_dict, indent=4)
 
-    syntax = Syntax(content, "json", theme="material", line_numbers=True)
+    syntax = Syntax(content, "toml", theme="material", line_numbers=True)
     console.print(syntax)

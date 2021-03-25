@@ -1,9 +1,9 @@
 
 # Configuration File
 
-The QuickZip configuration file is a .json file that is used to set the app configuration, job defaults, and job store. 
+The QuickZip configuration file is a .toml file that is used to set the app configuration, job defaults, and job store. 
 
-### `config`
+## `config`
 
 The main configuration for QuickZip. 
 
@@ -13,33 +13,18 @@ The main configuration for QuickZip.
 `webhook_address`
 :   Default: `''` · A single web address/url where the backup reports will be posted
 
-```json
-"config": {
-    "enable_webhooks": false,
-    "webhook_address": "https://webhooks.com/webhook",
-},
-```
+`verbose`
+:   Default `False`. Set the terminal output to verbose. Can also be done with --verbose
 
-### `vars`
+`zip_types`
+:   Default `[ ".tar.gz", ".bz2", ".zip" ]`. Currently doesn't do anything.
+
+
+## `vars`
 
 The vars key is an object of key/value pairs that are used can be used as variables within the `jobs` key. 
 
-```json
-"vars": {
-    "DATA_DIR": "/users/home/username/desktop",
-},
-"jobs": [
-    {
-        "name": "Dev Backup",
-        "source": "${DATA_DIR}/src", -> "/users/home/username/desktop/src"
-        "destination": "${DATA_DIR}/dest", -> "/users/home/username/desktop/src"
-        "clean_up": true,
-        "clean_up_source": true
-    }
-]
-```
-
-### `default`
+## `default`
 
 The default values for jobs when values are not specified. 
 
@@ -50,7 +35,7 @@ The default values for jobs when values are not specified.
 :   Default: `'None'` · The source directory or file to be zipped
 
 `destination`
-:   Default: `None'` · The destination directory where the zip files will be moved to. Must be a directory
+:   Default: `None | User Set'` · The destination directory where the zip files will be moved to. Must be a directory
 
 `clean_up`
 :   Default: `'false | User Set'` · When enabled, QuickZip will clean up the destination directory and only keep the newest `keep` number of files
@@ -61,44 +46,18 @@ The default values for jobs when values are not specified.
 `keep`
 :   Default: `'4 | User Set'` · The number of files to keep when using `clean_up` and `clean_up_source`.
 
-```json
-"defaults": {
-    "name": "",
-    "source": "",
-    "destination": "./nas/backups",
-    "clean_up": false,
-    "clean_up_source": false,
-    "keep": 4
-},
-```
+`audit`
+:   Default: `'true | User Set'` · Whether or not to audit the files in the backup directory
 
-### `jobs`
+`oldest`
+:   Default: `'7 | User Set'` · The oldest the newest backup in the audit directory can be
+
+
+## `jobs`
 The Jobs key is a list of jobs that are defined the same as the "defaults" refer to the defaults for key/value descriptions. A Full example is listed below to reference for formatting.
 
 
-### Full Example
-```json
-{
-    "config": {
-        "enable_webhooks": false,
-        "webhook_address": "https://webhooks.com/webhook",
-    },
-    "defaults": {
-        "name": "ENTRY",
-        "source": "",
-        "destination": "./nas/backups",
-        "clean_up": false,
-        "clean_up_source": false,
-        "keep": 4
-    },
-    "jobs": [
-        {
-            "name": "Home Assistant",
-            "source": "/Users/hayden/desktop/Home Assistant/src",
-            "destination": "/Users/hayden/desktop/Home Assistant/dest",
-            "clean_up": true,
-            "clean_up_source": true
-        }
-    ]
-}
+## Full Example
+```toml
+--8<-- 'docs_src/config.toml'
 ```
