@@ -1,10 +1,15 @@
 
 [tool.poetry]
 name = "quick_zip"
-version = "v0.1.4"
+version = "v0.1.6"
 description = ""
 authors = ["hay-kot <hay-kot@pm.me>"]
 exclude = ["config.toml"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://hay-kot.github.io/quick-zip-cli/"
+documentation = "https://hay-kot.github.io/quick-zip-cli/"
+repository = "https://github.com/hay-kot/quick-zip-cli/"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
