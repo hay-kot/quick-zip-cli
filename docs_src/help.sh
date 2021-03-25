@@ -1,4 +1,4 @@
-$ quick-zip --help
+$ qz --help
 
 Usage: qz [OPTIONS] COMMAND [ARGS]...
 

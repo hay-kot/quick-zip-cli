@@ -90,11 +90,11 @@ def run(job: BackupJob, verbose=False) -> dict:
     if job.audit:
         audit_report = checker.audit(job.final_dest, job.oldest)
 
-    if settings.verbose:
+    if settings.verbose and job.clean_up:
         console.print(f"\n[b]🗑  Cleanup '{job.destination}'", justify="center")
         content = Columns(clean_up_cards, equal=True, expand=False)
         console.print(content)
-    else:
+    elif job.clean_up:
         for trash in dest_clean:
             trash: Path
             console.print(f"\n[b]Cleanup '{job.destination}'")

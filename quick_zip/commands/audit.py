@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Optional
 
 import typer
-from quick_zip.core.settings import AppSettings, CONFIG_FILE, settings
+from quick_zip.core.settings import AppSettings, settings
 from quick_zip.schema.backup_job import BackupJob
 from quick_zip.services import checker
 
@@ -16,7 +16,7 @@ def verbose(verbose: bool = False):
 
 @app.callback(invoke_without_command=True)
 def audit(
-    config_file: str = typer.Argument(CONFIG_FILE),
+    config_file: str = typer.Argument(settings.config_file),
     job: Optional[list[str]] = typer.Option(None, "-j"),
 ):
     """🧐 Performs ONLY the audits for configured jobs"""

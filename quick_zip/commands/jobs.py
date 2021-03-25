@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import typer
-from quick_zip.core.settings import CONFIG_FILE, console
+from quick_zip.core.settings import settings, console
 from quick_zip.schema.backup_job import BackupJob
 from quick_zip.services import ui
 from rich.columns import Columns
@@ -13,7 +13,7 @@ app = typer.Typer()
 
 @app.callback(invoke_without_command=True)
 def main(
-    config_file: str = typer.Argument(CONFIG_FILE),
+    config_file: str = typer.Argument(settings.config_file),
     verbose: bool = typer.Option(False, "-v"),
 ):
     if isinstance(config_file, str):

@@ -4,7 +4,7 @@ from typing import Optional
 import typer
 
 from quick_zip.commands import audit, config, jobs
-from quick_zip.core.settings import CONFIG_FILE, AppSettings, console, settings
+from quick_zip.core.settings import console, settings
 from quick_zip.schema.backup_job import BackupJob, PostData
 from quick_zip.services import web, zipper
 
@@ -27,7 +27,7 @@ def verbose(verbose: bool = False):
 
 @app.command()
 def run(
-    config_file: Path = typer.Argument(CONFIG_FILE),
+    config_file: Path = typer.Argument(settings.config_file),
     job: Optional[list[str]] = typer.Option(None, "-j"),
     verbose: bool = typer.Option(False, "-v"),
 ):
@@ -36,7 +36,11 @@ def run(
     if isinstance(config_file, Path):
         settings.update_settings(config_file)
 
-    all_jobs = BackupJob.get_job_store(config_file)
+    try:
+        all_jobs = BackupJob.get_job_store(config_file)
+    except:
+        console.print(f"No jobs found, Try adding a job to {settings.config_file.absolute()}")
+        raise typer.Exit()
 
     if job:
         all_jobs = [x for x in all_jobs if x.name in job]

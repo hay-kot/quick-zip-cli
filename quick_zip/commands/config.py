@@ -1,10 +1,10 @@
 import json
 from pathlib import Path
 from typing import Optional
-import toml
 
+import toml
 import typer
-from quick_zip.core.settings import CONFIG_FILE, console
+from quick_zip.core.settings import console, settings
 from rich.syntax import Syntax
 
 app = typer.Typer()
@@ -12,11 +12,10 @@ app = typer.Typer()
 
 @app.callback(invoke_without_command=True)
 def config(
-    config_file: Optional[str] = typer.Argument(CONFIG_FILE),
+    config_file: Optional[str] = typer.Argument(settings.config_file),
     filter: Optional[str] = typer.Option(None, "-f"),
 ):
     """📄 displays the configuration file"""
-    print(CONFIG_FILE)
 
     if isinstance(config_file, str):
         config_file = Path(config_file)
@@ -37,5 +36,8 @@ def config(
 
         content = json.dumps(temp_dict, indent=4)
 
-    syntax = Syntax(content, "toml", theme="material", line_numbers=True)
-    console.print(syntax)
+    console.print("Config File Path", settings.config_file)
+
+    if settings.verbose:
+        syntax = Syntax(content, "toml", theme="material", line_numbers=True)
+        console.print(syntax)

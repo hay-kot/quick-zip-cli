@@ -42,6 +42,10 @@ Also, I just like building stuff. 👍
 - [x] CLI implementation
 - [x] Auditor Commands
 - [ ] Update Documentation
+- [x] Fix Default Config Generation
+    - [ ] Unify Config Reference
+    - [x] Config Name
+    - [x] Home Directory
 - [ ] Job Configuration
     - [x] Set default values
     - [x] Use variables in config file
@@ -53,6 +57,5 @@ Also, I just like building stuff. 👍
     - [x] Reading .toml file
     - [x] Find/Replace Vars
     - [x] Validate Input/Output
-- [ ] Release v0.1.0
-    - [ ] Poetry Package
+
 - [ ] Encrypted Zip Files

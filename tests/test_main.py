@@ -1,4 +1,4 @@
-from quick_zip.core.settings import APP_VERSION, CONFIG_FILE, AppSettings
+from quick_zip.core.settings import APP_VERSION
 
 
 def test_version():

@@ -7,7 +7,7 @@ QuickZip can be installed with pip. As to not pollute your system python, it is 
 <div class="termy">
 
 ```console
-$ pip install quick-zip-cli
+$ pip install quick-zip
 
 ---> 100%
 ```
@@ -27,23 +27,9 @@ Before you get started there are a few things you might want to do
 <div class="termy">
 
 ```console
-$ quick-zip
 
-Usage: quick-zip [OPTIONS] COMMAND [ARGS]...
+--8<-- "docs_src/help.sh"
 
-Options:
-  --install-completion [bash|zsh|fish|powershell|pwsh]
-                                  Install completion for the specified shell.
-  --show-completion [bash|zsh|fish|powershell|pwsh]
-                                  Show completion for the specified shell, to
-                                  copy it or customize the installation.
-
-  --help                          Show this message and exit.
-
-Commands:
-  config  ✏️ Used to read the current configuration
-  docs    💬 Opens up the CLI Documentation
-  run     ✨ The main entrypoint for the application.
 ```
 
 </div>
@@ -58,7 +44,7 @@ Commands:
 <div class="termy">
 
 ```console
-$ quick-zip run
+$ qz run
 ───────────── QuickZip: 'Dev Backup 3' ─────────────
 Creating: Dev Backup 3_2021.03.19_23.36.37
 

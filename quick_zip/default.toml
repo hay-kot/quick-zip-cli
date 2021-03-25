@@ -1,0 +1,24 @@
+[config]
+enable_webhooks = false
+webhook_address = "https://webhooks.com/webhook"
+zip_types = [ ".tar.gz", ".bz2", ".zip" ] # Does Nothing Yet 
+verbose = false
+
+[vars]
+MY_ROOT = "/"
+
+[defaults]
+destination = "/backups"
+clean_up = false
+clean_up_source = false
+keep = 1
+audit = true
+oldest = 4
+
+# [[jobs]]
+# name = "Backup"
+# source = [
+#   "${MY_ROOT}/src/test_data",
+# ]
+
+

@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 from typing import Optional
 
@@ -13,14 +14,19 @@ load_dotenv(dotenv_path=env_path)
 traceback.install()
 
 BASE_DIR = Path(__file__).parent.parent
+DEFAULT_CONFIG = BASE_DIR.joinpath("default.toml")
 APP_VERSION = "v0.1.0"
 console = Console()
 
 
 def determine_config_file():
     default_config = BASE_DIR.joinpath("config.toml")
-    config_file = os.getenv("QUICKZIP_CONFIG", default_config)
-    return Path(config_file)
+    config_file = Path(os.getenv("QUICKZIP_CONFIG", default_config))
+
+    if config_file.is_file():
+        return config_file
+
+    return Path(shutil.copy(DEFAULT_CONFIG, Path.home().joinpath("quick-zip_config.toml")))
 
 
 class AppSettings(BaseModel):
@@ -35,6 +41,7 @@ class AppSettings(BaseModel):
     """
 
     BASE_DIR: Path = BASE_DIR
+    HOME_DIR: Path = Path.home()
 
     enable_webhooks: bool
     webhook_address: str
@@ -66,10 +73,11 @@ class AppSettings(BaseModel):
         with open(file, "r") as f:
             config_json = toml.loads(f.read())["config"]
 
+        self.config_file = file
         for key, value in config_json.items():
             if hasattr(self, key):
                 setattr(self, key, value)
 
 
-CONFIG_FILE = determine_config_file()
-settings = AppSettings.from_file(CONFIG_FILE)
+determined_config = determine_config_file()
+settings = AppSettings.from_file(determined_config)

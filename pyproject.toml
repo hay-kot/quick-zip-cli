@@ -1,9 +1,10 @@
 
 [tool.poetry]
 name = "quick_zip"
-version = "v0.1.0"
+version = "v0.1.4"
 description = ""
 authors = ["hay-kot <hay-kot@pm.me>"]
+exclude = ["config.toml"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -24,6 +25,7 @@ requests = "^2.25.1"
 python-slugify = "^4.0.1"
 python-dotenv = "^0.15.0"
 pyzipper = "^0.3.4"
+toml = "0.10.2"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
