@@ -22,7 +22,7 @@ testpaths = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 pydantic = "^1.8.1"
 typer = "^0.3.2"
 rich = "^9.13.0"
