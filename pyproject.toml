@@ -22,7 +22,7 @@ testpaths = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 pydantic = "^1.8.1"
 typer = "^0.3.2"
 rich = "^9.13.0"
@@ -39,6 +39,8 @@ mkdocs-material = "^7.0.6"
 mkdocstrings = "^0.15.0"
 pytest = "^6.2.2"
 pytest-cov = "^2.11.1"
+tox = "^3.23.0"
+
 
 [tool.poetry.scripts]
 qz = "quick_zip.main:main"
