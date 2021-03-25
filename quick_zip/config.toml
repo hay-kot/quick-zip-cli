@@ -1,0 +1,47 @@
+[config]
+enable_webhooks = false
+webhook_address = "https://webhooks.com/webhook"
+zip_types = [ ".tar.gz", ".bz2", ".zip" ] # Does Nothing Yet 
+verbose = false
+
+[vars]
+DATA_DIR = "/Users/hayden/Projects/quick-zip-cli/data"
+
+[defaults]
+name = "ENTRY"
+source = ""
+destination = "/backups"
+clean_up = false
+clean_up_source = false
+keep = 1
+audit = true
+oldest = 0
+
+[[jobs]]
+name = "Dev Backup"
+source = [
+  "${DATA_DIR}/src/test_data",
+]
+destination = "${DATA_DIR}/dest"
+clean_up = true
+clean_up_source = true
+
+[[jobs]]
+name = "Dev Backup 2"
+source = [
+  "${DATA_DIR}/src/test_data",
+]
+destination = "${DATA_DIR}/dest"
+clean_up = true
+clean_up_source = true
+
+[[jobs]]
+name = "Dev Backup 3"
+source = [
+  "${DATA_DIR}/src/test_data",
+]
+destination = "${DATA_DIR}/dest"
+clean_up = true
+clean_up_source = true
+
+

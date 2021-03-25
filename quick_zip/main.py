@@ -27,15 +27,14 @@ def verbose(verbose: bool = False):
 
 @app.command()
 def run(
-    config_file: str = typer.Argument(CONFIG_FILE),
+    config_file: Path = typer.Argument(CONFIG_FILE),
     job: Optional[list[str]] = typer.Option(None, "-j"),
     verbose: bool = typer.Option(False, "-v"),
 ):
     """✨ The main entrypoint for the application. By default will run"""
 
-    if isinstance(config_file, str):
-        config_file = Path(config_file)
-    config: AppSettings = AppSettings.from_file(config_file)
+    if isinstance(config_file, Path):
+        settings.update_settings(config_file)
 
     all_jobs = BackupJob.get_job_store(config_file)
 
@@ -52,8 +51,8 @@ def run(
 
         reports.append(report)
 
-    if config.enable_webhooks:
-        web.post_file_data(config.webhook_address, body=PostData(data=reports))
+    if settings.enable_webhooks:
+        web.post_file_data(settings.webhook_address, body=PostData(data=reports))
 
 
 def main():

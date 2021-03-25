@@ -1,5 +1,4 @@
 import os
-import shutil
 import time
 import zipfile as zf
 from pathlib import Path
@@ -10,46 +9,72 @@ from quick_zip.services import checker, ui
 from quick_zip.utils import fstats
 from rich.columns import Columns
 from rich.layout import Panel
-from rich.progress import Progress, track
+from rich.progress import Progress
 
 
 def get_all_source_size(sources: list[Path]):
     total = 0
 
     for src in sources:
-        total += sum(f.stat().st_size for f in src.glob("**/*") if f.is_file())
+        if src.is_file():
+            total += src.stat().st_size
+        else:
+            total += sum(f.stat().st_size for f in src.glob("**/*") if f.is_file())
 
     return total
 
 
-def zipdir(path, ziph, progress: Progress, task):
+def compress_dif(size_before, size_after):
+    pretty_before = fstats.sizeof_fmt(size_before)
+    pretty_after = fstats.sizeof_fmt(size_after)
+
+    if size_after == size_before:
+        percent = 100.0
+    try:
+        percent = (abs(size_after - size_before) / size_before) * 100.0
+    except ZeroDivisionError:
+        percent = 0
+
+    return f"Compression '{pretty_before}' -> '{pretty_after}' | [b]Size Reduced {round(percent)}%"
+
+
+def zipdir(path, ziph, progress: Progress, task, top_dir):
     for root, _dirs, files in os.walk(path):
+
         for file in files:
-            ziph.write(os.path.join(root, file))
+            progress.update(task, description=f"[red]Zipping...{Path(file).name}")
+            in_zip_path = os.path.relpath(os.path.join(root, file), top_dir)
+            ziph.write(os.path.join(root, file), in_zip_path)
+
             if not progress.finished:
-                if not progress.finished:
-                    file = Path(root).joinpath(file)
-                    progress.update(task, advance=file.stat().st_size)
+                file = Path(root).joinpath(file)
+                progress.update(task, advance=file.stat().st_size)
 
 
 def run(job: BackupJob, verbose=False) -> dict:
     dest = get_backup_name(job.name, job.final_dest, "zip", is_file=True)
     dest = job.final_dest.joinpath(dest)
 
-    to_zip = get_all_source_size(job.source)
+    to_zip_size = get_all_source_size(job.source)
     with zf.ZipFile(dest.absolute(), mode="a") as f:
         with Progress() as progress:
 
-            task = progress.add_task("[red] Zipping...", total=to_zip)
+            task = progress.add_task("[red]Zipping...", total=to_zip_size)
 
             for src in job.source:
+                top_dir = "/"
+                progress.update(task, description=f"[red]Zipping... {src.name}")
                 if src.is_dir():
-                    zipdir(src, f, progress, task)
+                    top_dir = src
+                    zipdir(src, f, progress, task, top_dir)
                 else:
-                    f.write(src)
+                    f.write(src, top_dir.joinpath(src.name))
 
                     if not progress.finished:
                         progress.update(task, advance=dest.stat().st_size)
+
+    compression = compress_dif(to_zip_size, get_all_source_size([dest]))
+    console.print(compression)
 
     clean_up_cards = []
     if job.clean_up:

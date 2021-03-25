@@ -1,0 +1,35 @@
+[config]
+enable_webhooks = true
+webhook_address = "https://10.10.10.93:8123/api/webhook/tXpVcw2Cc6BG2stM6xa7kycauFGljuiL"
+
+[vars]
+VAR_1 = "var_1_value"
+VAR_2 = "var_2_value"
+
+[defaults]
+name = "ENTRY"
+source = []
+destination = "/backups"
+clean_up = false
+clean_up_source = false
+keep = 1
+audit = true
+oldest = 0
+
+[[jobs]]
+name = "${VAR_1}"
+source = [ "/${VAR_2}/entry_1/${VAR_2}" ]
+destination = "/home/entry_1/${VAR_2}"
+clean_up = false
+
+[[jobs]]
+name = "entry_2"
+source = ["/home/entry_2"]
+destination = "/home/entry_2/backups"
+clean_up = false
+
+[[jobs]]
+name = "VALID JOB"
+source = ["/"]
+destination = "/home/entry_2/backups"
+clean_up = false

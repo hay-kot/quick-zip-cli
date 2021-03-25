@@ -3,10 +3,21 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
+import toml
 from pydantic import BaseModel
+from quick_zip.core.settings import settings
 from quick_zip.schema.file_system import FileStat
+
+
+def get_default(attribute_name: str, fall_back: Any = None) -> Any:
+    with open(settings.config_file, "r") as f:
+        defaults = toml.loads(f.read())["defaults"]
+    try:
+        return defaults[attribute_name]
+    except:
+        return fall_back
 
 
 class BackupJob(BaseModel):
@@ -26,12 +37,12 @@ class BackupJob(BaseModel):
     name: str
     source: list[Path]
     destination: Path
-    all_files: bool = False
-    clean_up: bool = False
-    clean_up_source: bool = False
-    keep: int = 4
-    audit: bool = True
-    oldest: int = -1
+    all_files: bool = get_default("all_files", True)
+    clean_up: bool = get_default("clean_up", True)
+    clean_up_source: bool = get_default("clean_up_source", False)
+    keep: int = get_default("keep", 4)
+    audit: bool = get_default("audit", True)
+    oldest: int = get_default("oldest", 7)
 
     def __repr__(self) -> str:
         return f"""
@@ -54,16 +65,16 @@ class BackupJob(BaseModel):
     @classmethod
     def get_defaults(cls, file: Path) -> BackupJob:
         """Helper function to pull the "default" key out of a
-        config.json file, or whatever file is passed as the argument
+        config.toml file, or whatever file is passed as the argument
 
         Args:
-            file (Path): Path to config.json
+            file (Path): Path to config.toml
 
         Returns:
             [BackupJob]: Returns an Instance of BackupJob
         """
         with open(file, "r") as f:
-            config_json = json.loads(f.read())
+            config_json = toml.loads(f.read())
 
         if defaults := config_json.get("defaults"):
             return cls(**defaults)
@@ -98,12 +109,12 @@ class BackupJob(BaseModel):
         with open(config, "r") as f:
             raw_content = f.read()
 
-        vars: dict = json.loads(raw_content).get("vars", False)
+        vars: dict = toml.loads(raw_content).get("vars", False)
         if vars:
             content = BackupJob._find_replace_vars(raw_content, vars)
-            content = json.loads(content).get("jobs")
+            content = toml.loads(content).get("jobs")
         else:
-            content: list[dict] = json.loads(raw_content).get("jobs")
+            content: list[dict] = toml.loads(raw_content).get("jobs")
 
         return [BackupJob(**job) for job in content]
 

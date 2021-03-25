@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from typing import Optional
+import toml
 
 import typer
 from quick_zip.core.settings import CONFIG_FILE, console
@@ -24,7 +25,7 @@ def config(
         content = f.read()
 
     if filter:
-        temp_dict = json.loads(content).get(filter)
+        temp_dict = toml.loads(content).get(filter)
 
         if temp_dict == None:
             console.print(

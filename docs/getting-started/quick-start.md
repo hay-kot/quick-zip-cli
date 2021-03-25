@@ -19,7 +19,7 @@ $ pip install quick-zip-cli
 Before you get started there are a few things you might want to do
 
 #### Optional
-**Specify a default config.json file.** This is specified with the full-path to the config.json file on our file system using the `QUICKZIP_CONFIG` env variable. Note that if this is not set, you must pass the path to the config.json file when call `quick-zip run`. See the Config File page for a template and more details on the configuration template.
+**Specify a default config.toml file.** This is specified with the full-path to the config.toml file on our file system using the `QUICKZIP_CONFIG` env variable. Note that if this is not set, you must pass the path to the config.toml file when call `quick-zip run`. See the Config File page for a template and more details on the configuration template.
 
 
 ### Running

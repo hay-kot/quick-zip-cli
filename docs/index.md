@@ -4,7 +4,7 @@
 !!! warning "This is a work in progress and not currently published. Use at your own risk."
 
 ## What QuickZip Is
-QuickZip is a CLI utility I developed to solve a backup problem on my machines. I wanted a way to quickly backup up small sets of configuration files and data without deploying a massive, hard to maintain tool with too much front-end configuration. QuickZip uses a config.json file to build tiny list of backups that are conducted when called (typically via cron). 
+QuickZip is a CLI utility I developed to solve a backup problem on my machines. I wanted a way to quickly backup up small sets of configuration files and data without deploying a massive, hard to maintain tool with too much front-end configuration. QuickZip uses a config.toml file to build tiny list of backups that are conducted when called (typically via cron). 
 
 ### Key Features
  - Create jobs with configuration file, including support for variables and defaults
@@ -55,12 +55,17 @@ Also, I just like building stuff. 👍
 - [x] CLI implementation
 - [x] Auditor Commands
 - [ ] Job Configuration
-    - [ ] Set default values
+    - [x] Set default values
     - [x] Use variables in config file
-    - [ ] Add property for glob style matching
-    - [ ] Pass list of files to zip in config file.
+    - [x] Add property for glob style matching
+    - [x] Pass list of files to zip in config file.
     - [ ] Git Repo Backup
     - [ ] Web Download Backup
+- [ ] Tests
+  - [ ] Reading .toml file
+  - [ ] Find/Replace Vars
+  - [ ] Glob Matching
+  - [ ] Validate Input/Output
 - [ ] Release v0.1.0
     - [ ] Poetry Package
 - [ ] Encrypted Zip Files

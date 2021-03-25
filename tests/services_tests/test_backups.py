@@ -1,88 +1,66 @@
 import shutil
 from pathlib import Path
 
+import pytest
 from quick_zip.schema.backup_job import BackupJob, BackupResults
 from quick_zip.services.zipper import get_deletes, run
 
 
-def test_keep_sort(dest_dir):
+def test_get_job_store(resource_dir):
+    jobs = BackupJob.get_job_store(resource_dir.joinpath("config.toml"))
+    assert all([isinstance(x, BackupJob) for x in jobs])
+
+
+def test_validate_job_store(job_store, resource_dir, dest_dir):
+    for job in job_store:
+        pass
+
+
+def test_replace_variables(test_config: Path):
+    VAR_1 = "var_1_value"
+    VAR_2 = "var_2_value"
+    job_store = BackupJob.get_job_store(test_config)
+
+    job = job_store[0]
+
+    assert job.name == f"{VAR_1}"
+    assert job.source == [Path(f"/{VAR_2}/entry_1/{VAR_2}")]
+    assert job.destination == Path(f"/home/entry_1/{VAR_2}")
+
+
+def test_content_validation(job_store, temp_dir, dest_dir, file_with_content: Path, resource_dir):
+    job_to_run = job_store[2]
+    job_to_run: BackupJob
+    job_to_run.source = [resource_dir.joinpath("src")]
+    job_to_run.destination = dest_dir
+
+    with open(file_with_content, "r") as f:
+        valid_content = f.read()
+
+    data: BackupResults = run(job_to_run)
+    assert data
+
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    shutil.unpack_archive(data.file, temp_dir)
+
+    with open(temp_dir.joinpath(file_with_content.name), "r") as f:
+        content = f.read()
+
+    assert content == valid_content
+
+
+@pytest.mark.parametrize("x", [1, 2, 3, 4])
+def test_keep_sort(resource_dir, x):
     """ 1 is the oldest, 5 is the newest"""
-    test_dir = dest_dir.joinpath("sort")
+    test_dir = resource_dir.joinpath("sort")
     one = test_dir.joinpath("1.txt")
     two = test_dir.joinpath("2.txt")
     three = test_dir.joinpath("3.txt")
     four = test_dir.joinpath("4.txt")
-    _five = test_dir.joinpath("5.txt")
+    five = test_dir.joinpath("5.txt")
 
-    deletes = get_deletes(test_dir, 1)
-    expected = [one, two, three, four]
+    all_files = [one, two, three, four, five]
+
+    deletes = get_deletes(test_dir, x)
+    expected = all_files[:-x]
     assert set(deletes) == set(expected)
-
-    deletes = get_deletes(test_dir, 2)
-    expected = [one, two, three]
-    assert set(deletes) == set(expected)
-
-    deletes = get_deletes(test_dir, 3)
-    expected = [one, two]
-    assert set(deletes) == set(expected)
-
-    deletes = get_deletes(test_dir, 4)
-    expected = [one]
-    assert set(deletes) == set(expected)
-
-    deletes = get_deletes(test_dir, 5)
-    expected = []
-    assert set(deletes) == set(expected)
-
-
-class BackupJobTests:
-    @staticmethod
-    def test_default_values(job_store, resource_dir, dest_dir):
-        assert isinstance(job_store, BackupJob)
-
-        # Test Default Values
-        assert job_store.name == "Test Job"
-        assert job_store.source == [resource_dir.joinpath("src")]
-        assert job_store.destination == dest_dir
-        assert job_store.clean_up == False
-        assert job_store.all_files == False
-        assert job_store.keep == 4
-
-    @staticmethod
-    def test_replace_variables(config_with_vars: Path):
-        VAR_1 = "var_1_value"
-        VAR_2 = "var_2_value"
-        job_store = BackupJob.get_job_store(config_with_vars)
-
-        job = job_store[0]
-
-        assert job.name == f"{VAR_1}"
-        assert job.source == [Path(f"/{VAR_2}/entry_1/{VAR_2}")]
-        assert job.destination == Path(f"/home/entry_1/{VAR_2}")
-
-    @staticmethod
-    def test_get_job_store(resource_dir):
-        jobs = BackupJob.get_job_store(resource_dir.joinpath("config.json"))
-        assert all([isinstance(x, BackupJob) for x in jobs])
-
-    @staticmethod
-    def test_contents(job_store, temp_dir):
-        data: BackupResults = run(job_store)
-        assert data
-
-        temp_dir.mkdir(parents=True, exist_ok=True)
-        shutil.unpack_archive(data.file, temp_dir)
-
-        with open(temp_dir.joinpath("my_files.txt"), "r") as f:
-            content = f.read()
-
-        assert content == "this is my test file contents"
-
-
-def test_glob_sort():
-    data = [
-        "/path/to/data",
-        "/path/to/*"
-        "/my/absolute/path*.tar"
-        "/data/aboslute/data"
-    ]
