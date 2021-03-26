@@ -13,6 +13,8 @@ RESOURCES = CWD.joinpath("resources")
 DEST = RESOURCES.joinpath("dest")
 TEST_CONFIG = RESOURCES.joinpath("config.toml")
 
+DEST.mkdir(exist_ok=True, parents=True)
+
 # Assign Testing Defaults
 settings.update_settings(TEST_CONFIG)
 
