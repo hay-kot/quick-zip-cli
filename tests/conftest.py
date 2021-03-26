@@ -53,6 +53,24 @@ def temp_dir():
 
 
 @pytest.fixture()
+def test_files():
+    files = []
+    letters = string.ascii_lowercase
+
+    for x in range(5):
+        result_str = "".join(random.choice(letters) for i in range(1000))
+        RESOURCES.joinpath("sort").mkdir(exist_ok=True)
+        file = RESOURCES.joinpath("sort", f"file_{x}.txt")
+
+        with open(file, "w") as f:
+            f.write(result_str)
+
+        files.append(file)
+
+    return files
+
+
+@pytest.fixture()
 def file_with_content():
     letters = string.ascii_lowercase
     result_str = "".join(random.choice(letters) for i in range(1000))
@@ -62,5 +80,5 @@ def file_with_content():
     with open(file, "w") as f:
         f.write(result_str)
 
-    return file
+    yield file
     file.unlink()

@@ -50,17 +50,10 @@ def test_content_validation(job_store, temp_dir, dest_dir, file_with_content: Pa
 
 
 @pytest.mark.parametrize("x", [1, 2, 3, 4])
-def test_keep_sort(resource_dir, x):
+def test_keep_sort(test_files, x):
     """ 1 is the oldest, 5 is the newest"""
-    test_dir = resource_dir.joinpath("sort")
-    one = test_dir.joinpath("1.txt")
-    two = test_dir.joinpath("2.txt")
-    three = test_dir.joinpath("3.txt")
-    four = test_dir.joinpath("4.txt")
-    five = test_dir.joinpath("5.txt")
+    source_dir = test_files[0].parent
 
-    all_files = [one, two, three, four, five]
-
-    deletes = get_deletes(test_dir, x)
-    expected = all_files[:-x]
+    deletes = get_deletes(source_dir, x)
+    expected = test_files[:-x]
     assert set(deletes) == set(expected)
