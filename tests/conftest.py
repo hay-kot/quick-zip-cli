@@ -11,12 +11,22 @@ from typer.testing import CliRunner
 CWD = Path(__file__).parent
 RESOURCES = CWD.joinpath("resources")
 DEST = RESOURCES.joinpath("dest")
+SRC = RESOURCES.joinpath("src")
+SORT = RESOURCES.joinpath("sort")
+
 TEST_CONFIG = RESOURCES.joinpath("config.toml")
 
-DEST.mkdir(exist_ok=True, parents=True)
+IMPORTANT_DIRS = [RESOURCES, SORT, SRC]
 
-# Assign Testing Defaults
-settings.update_settings(TEST_CONFIG)
+
+def setup_tests():
+    settings.update_settings(TEST_CONFIG)
+
+    for dir in IMPORTANT_DIRS:
+        dir.mkdir(parents=True, exist_ok=True)
+
+
+setup_tests()
 
 
 @pytest.fixture
@@ -44,43 +54,44 @@ def resource_dir():
 @pytest.fixture
 def dest_dir():
     yield DEST
-    [x.unlink() for x in DEST.glob("*.zip")]
+
+    for dir in DEST.glob("*/"):
+        shutil.rmtree(dir)
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")  #! This is dumb, remove this
 def temp_dir():
     temp_dir = RESOURCES.joinpath(".temp")
     yield temp_dir
     shutil.rmtree(temp_dir, ignore_errors=True)
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def test_files():
     files = []
     letters = string.ascii_lowercase
-    RESOURCES.joinpath("sort").mkdir(exist_ok=True)
     for x in range(5):
         result_str = "".join(random.choice(letters) for i in range(1000))
-        file = RESOURCES.joinpath("sort", f"file_{x}.txt")
+        file = SORT.joinpath(f"file_{x}.txt")
 
         with open(file, "w") as f:
             f.write(result_str)
 
         files.append(file)
 
-    return files
+    yield files
+    shutil.rmtree(SORT)
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def file_with_content():
     letters = string.ascii_lowercase
     result_str = "".join(random.choice(letters) for i in range(1000))
 
-    RESOURCES.joinpath("src").mkdir(exist_ok=True)
-    file = RESOURCES.joinpath("src", "temp_file.txt")
+    file = SRC.joinpath("temp_file.txt")
 
     with open(file, "w") as f:
         f.write(result_str)
 
     yield file
-    # file.unlink()
+    shutil.rmtree(SRC)
