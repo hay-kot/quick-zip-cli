@@ -61,7 +61,6 @@ def test_files():
 
     for x in range(5):
         result_str = "".join(random.choice(letters) for i in range(1000))
-        RESOURCES.joinpath("sort").mkdir(exist_ok=True)
         file = RESOURCES.joinpath("sort", f"file_{x}.txt")
 
         with open(file, "w") as f:
@@ -77,10 +76,11 @@ def file_with_content():
     letters = string.ascii_lowercase
     result_str = "".join(random.choice(letters) for i in range(1000))
 
+    RESOURCES.joinpath("sort").mkdir(exist_ok=True)
     file = RESOURCES.joinpath("src", "temp_file.txt")
 
     with open(file, "w") as f:
         f.write(result_str)
 
     yield file
-    file.unlink()
+    # file.unlink()
