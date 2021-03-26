@@ -2,6 +2,7 @@ import random
 import shutil
 import string
 from pathlib import Path
+from time import sleep
 
 import pytest
 from quick_zip.core.settings import settings
@@ -78,6 +79,7 @@ def test_files():
             f.write(result_str)
 
         files.append(file)
+        sleep(1)
 
     yield files
     shutil.rmtree(SORT)

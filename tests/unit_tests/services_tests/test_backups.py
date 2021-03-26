@@ -11,9 +11,9 @@ def test_get_job_store(resource_dir):
     assert all([isinstance(x, BackupJob) for x in jobs])
 
 
-def test_validate_job_store(job_store, resource_dir, dest_dir):
-    for job in job_store:
-        pass
+# def test_validate_job_store(job_store, resource_dir, dest_dir):
+#     for job in job_store:
+#         pass
 
 
 def test_replace_variables(test_config: Path):
