@@ -16,7 +16,7 @@ def format_time(timestamp):
 
 
 def get_days_old(path: Path) -> int:
-    time_create = datetime.fromtimestamp(int(os.stat(path).st_birthtime))
+    time_create = datetime.fromtimestamp(int(path.stat().st_ctime))
     time_now = datetime.now()
     difference = time_now - time_create
     duration_in_s = difference.total_seconds() // 86400  # Second in a Day

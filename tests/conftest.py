@@ -79,7 +79,7 @@ def test_files():
             f.write(result_str)
 
         files.append(file)
-        sleep(1)
+        sleep(0.1)
 
     yield files
     shutil.rmtree(SORT)
