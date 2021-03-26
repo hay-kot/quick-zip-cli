@@ -1,4 +1,4 @@
-name: Pytest
+name: Tox Tests
 on:
   push:
     branches:
@@ -33,12 +33,12 @@ jobs:
       # #----------------------------------------------
       # #       load cached venv if cache exists #! This Breaks Stuff
       # #----------------------------------------------
-      # - name: Load cached venv
-      #   id: cached-poetry-dependencies
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: .venv
-      #     key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       #----------------------------------------------
       # install dependencies if cache does not exist
       #----------------------------------------------
@@ -48,6 +48,6 @@ jobs:
       #----------------------------------------------
       #              run test suite
       #----------------------------------------------
-      - name: Run tests
+      - name: Run Tests 3.8/3.9
         run: |
           poetry run tox
