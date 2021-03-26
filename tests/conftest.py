@@ -58,7 +58,7 @@ def temp_dir():
 def test_files():
     files = []
     letters = string.ascii_lowercase
-
+    RESOURCES.joinpath("sort").mkdir(exist_ok=True)
     for x in range(5):
         result_str = "".join(random.choice(letters) for i in range(1000))
         file = RESOURCES.joinpath("sort", f"file_{x}.txt")
@@ -76,7 +76,7 @@ def file_with_content():
     letters = string.ascii_lowercase
     result_str = "".join(random.choice(letters) for i in range(1000))
 
-    RESOURCES.joinpath("sort").mkdir(exist_ok=True)
+    RESOURCES.joinpath("src").mkdir(exist_ok=True)
     file = RESOURCES.joinpath("src", "temp_file.txt")
 
     with open(file, "w") as f:
