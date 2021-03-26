@@ -26,7 +26,7 @@ def config(
     if filter:
         temp_dict = toml.loads(content).get(filter)
 
-        if temp_dict == None:
+        if temp_dict is None:
             console.print(
                 f"Error! Could not find key '{filter}' in {config_file}",
                 style="red",

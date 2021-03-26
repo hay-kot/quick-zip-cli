@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-import json
 import re
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 import toml
+import typer
 from pydantic import BaseModel
-from quick_zip.core.settings import settings
+from quick_zip.core.settings import console, settings
 from quick_zip.schema.file_system import FileStat
 
 
@@ -16,7 +16,7 @@ def get_default(attribute_name: str, fall_back: Any = None) -> Any:
         defaults = toml.loads(f.read())["defaults"]
     try:
         return defaults[attribute_name]
-    except:
+    except AttributeError:
         return fall_back
 
 
@@ -35,7 +35,7 @@ class BackupJob(BaseModel):
     """
 
     name: str
-    source: list[Path]
+    source: List[Path]
     destination: Path
     all_files: bool = get_default("all_files", True)
     clean_up: bool = get_default("clean_up", True)
@@ -47,13 +47,12 @@ class BackupJob(BaseModel):
     def __repr__(self) -> str:
         return f"""
 
-        Name: {self.name} 
-        Source: {self.source} 
-        Destination: {self.destination} 
-        Include All Files: {self.all_files} 
-        Cleanup: {self.clean_up} 
-        keep: {self.keep} 
-        
+        Name: {self.name}
+        Source: {self.source}
+        Destination: {self.destination}
+        Include All Files: {self.all_files}
+        Cleanup: {self.clean_up}
+        keep: {self.keep}
         """
 
     @property
@@ -95,7 +94,7 @@ class BackupJob(BaseModel):
         return content
 
     @staticmethod
-    def get_job_store(config: Path) -> list[BackupJob]:
+    def get_job_store(config: Path) -> List[BackupJob]:
         """A Helper function to read the "jobs" key of the configuration
         file and return a list of BackupJob Objects.
 
@@ -103,7 +102,7 @@ class BackupJob(BaseModel):
             config (Path): The Path object for the configuration file
 
         Returns:
-            list[BackupJob]:
+            List[BackupJob]:
         """
 
         with open(config, "r") as f:
@@ -114,9 +113,13 @@ class BackupJob(BaseModel):
             content = BackupJob._find_replace_vars(raw_content, vars)
             content = toml.loads(content).get("jobs")
         else:
-            content: list[dict] = toml.loads(raw_content).get("jobs")
+            content: List[dict] = toml.loads(raw_content).get("jobs")
 
-        return [BackupJob(**job) for job in content]
+        try:
+            return [BackupJob(**job) for job in content]
+        except TypeError:
+            console.print(f"No jobs found, Try adding a job to {settings.config_file.absolute()}")
+            raise typer.Exit()
 
 
 class BackupFile(BaseModel):
@@ -148,4 +151,4 @@ class BackupResults(BaseModel):
 
 
 class PostData(BaseModel):
-    data: list[BackupResults]
+    data: List[BackupResults]

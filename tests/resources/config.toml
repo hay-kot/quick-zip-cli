@@ -12,6 +12,7 @@ source = []
 destination = "/backups"
 clean_up = false
 clean_up_source = false
+all_files = false
 keep = 1
 audit = true
 oldest = 0

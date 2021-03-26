@@ -1,12 +1,12 @@
 from pathlib import Path
 
 import typer
-from quick_zip.core.settings import settings, console
+from quick_zip.core.settings import console, settings
 from quick_zip.schema.backup_job import BackupJob
 from quick_zip.services import ui
+from rich import box
 from rich.columns import Columns
 from rich.table import Table
-from rich import box
 
 app = typer.Typer()
 
@@ -16,6 +16,7 @@ def main(
     config_file: str = typer.Argument(settings.config_file),
     verbose: bool = typer.Option(False, "-v"),
 ):
+    """🚧 Under construction..."""
     if isinstance(config_file, str):
         config_file = Path(config_file)
     # config: AppCnfig = AppConfig.from_file(config_file)

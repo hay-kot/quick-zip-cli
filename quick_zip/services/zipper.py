@@ -1,5 +1,6 @@
 import os
 import time
+from typing import List
 import zipfile as zf
 from pathlib import Path
 
@@ -12,7 +13,7 @@ from rich.layout import Panel
 from rich.progress import Progress
 
 
-def get_all_source_size(sources: list[Path]):
+def get_all_source_size(sources: List[Path]):
     total = 0
 
     for src in sources:
@@ -116,13 +117,13 @@ def get_all_stats(path: Path) -> dict:
     return
 
 
-def get_deletes(directory: Path, keep: int) -> list[Path]:
+def get_deletes(directory: Path, keep: int) -> List[Path]:
     clean_list = sorted(directory.iterdir(), key=os.path.getmtime, reverse=True)
     deletes = [x for x in clean_list if x.is_file()]
     return deletes[keep:]
 
 
-def clean_up_dir(directory: Path, keep: int) -> list[Path]:
+def clean_up_dir(directory: Path, keep: int) -> List[Path]:
     clean_list = get_deletes(directory, keep)
 
     for file in clean_list:
@@ -133,7 +134,7 @@ def clean_up_dir(directory: Path, keep: int) -> list[Path]:
     return backups, clean_list
 
 
-def cleanup_card(src_list: list[Path], dest_list: list[Path], title):
+def cleanup_card(src_list: List[Path], dest_list: List[Path], title):
     content = ""
     src_content = "[b red]Source Directory[/]\n"
     for p in src_list:

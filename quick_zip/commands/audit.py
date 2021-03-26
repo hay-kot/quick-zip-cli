@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 import typer
 from quick_zip.core.settings import AppSettings, settings
@@ -17,12 +19,12 @@ def verbose(verbose: bool = False):
 @app.callback(invoke_without_command=True)
 def audit(
     config_file: str = typer.Argument(settings.config_file),
-    job: Optional[list[str]] = typer.Option(None, "-j"),
+    job: Optional[List[str]] = typer.Option(None, "-j"),
 ):
     """🧐 Performs ONLY the audits for configured jobs"""
     if isinstance(config_file, str):
         config_file = Path(config_file)
-        config: AppSettings = AppSettings.from_file(config_file)
+        _config: AppSettings = AppSettings.from_file(config_file)
 
     all_jobs = BackupJob.get_job_store(config_file)
 
@@ -31,4 +33,4 @@ def audit(
 
     for my_job in all_jobs:
         my_job: BackupJob
-        audit_report = checker.audit(my_job.final_dest, my_job.oldest)
+        _audit_report = checker.audit(my_job.final_dest, my_job.oldest)

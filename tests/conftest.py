@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 from quick_zip.core.settings import settings
 from quick_zip.schema.backup_job import BackupJob
+from typer.testing import CliRunner
 
 CWD = Path(__file__).parent
 RESOURCES = CWD.joinpath("resources")
@@ -14,6 +15,13 @@ TEST_CONFIG = RESOURCES.joinpath("config.toml")
 
 # Assign Testing Defaults
 settings.update_settings(TEST_CONFIG)
+
+
+@pytest.fixture
+def test_app(monkeypatch):
+    monkeypatch.setenv("QUICKZIP_CONFIG", str(TEST_CONFIG))
+
+    return CliRunner()
 
 
 @pytest.fixture
@@ -41,7 +49,7 @@ def dest_dir():
 def temp_dir():
     temp_dir = RESOURCES.joinpath(".temp")
     yield temp_dir
-    # shutil.rmtree(temp_dir, ignore_errors=True)
+    shutil.rmtree(temp_dir, ignore_errors=True)
 
 
 @pytest.fixture()

@@ -15,7 +15,7 @@ traceback.install()
 
 BASE_DIR = Path(__file__).parent.parent
 DEFAULT_CONFIG = BASE_DIR.joinpath("default.toml")
-APP_VERSION = "v0.1.0"
+APP_VERSION = "v0.1.8"
 console = Console()
 
 

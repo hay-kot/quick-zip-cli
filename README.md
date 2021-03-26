@@ -52,26 +52,3 @@ I can't comment on every backup utility but I can mention the few that I looked 
 - Webhook Support: Send backup data to Home Assistant for notifications and dashboards. 
 
 Also, I just like building stuff. 👍
-
-
-## To Do's
-- [x] Fix animated terminals for docs
-- [x] Only run some jobs
-- [x] Read config path from .env
-- [x] CLI implementation
-- [x] Auditor Commands
-- [ ] Update Documentation
-- [ ] Job Configuration
-    - [x] Set default values
-    - [x] Use variables in config file
-    - [x] Add property for glob style matching
-    - [x] Pass list of files to zip in config file.
-    - [ ] Git Repo Backup
-    - [ ] Web Download Backup
-- [x] Tests
-    - [x] Reading .toml file
-    - [x] Find/Replace Vars
-    - [x] Validate Input/Output
-- [ ] Release v0.1.0
-    - [ ] Poetry Package
-- [ ] Encrypted Zip Files
