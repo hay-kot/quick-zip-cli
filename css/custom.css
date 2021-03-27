@@ -1,0 +1,65 @@
+:root {
+  --md-primary-fg-color: #2196f3;
+  --md-primary-fg-color--light: #2196f3;
+  --md-primary-fg-color--dark: #2196f3;
+  --md-accent-fg-color: #2196f3;
+  --md-accent-fg-color--light: #2196f3;
+  --md-accent-fg-color--dark: #2196f3;
+}
+
+body {
+  background: var(--md-primary-bg-color);
+}
+
+/* frontpage elements */
+.tx-hero h1 {
+  font-size: 2.41rem !important;
+}
+a.md-button.md-button--primary {
+  background-color: var(--md-accent-fg-color);
+  border-color: var(--md-accent-fg-color);
+  color: #ffffff;
+}
+a.md-button.md-button--primary:hover {
+  color: #000000;
+}
+a.md-button.md-button:hover {
+  color: #ffffff;
+}
+
+/* Site width etc.*/
+.md-grid {
+  max-width: 64rem !important;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: #2196f3;
+}
+
+th {
+  font-weight: bold;
+}
+
+.termynal-comment {
+  color: #4a968f;
+  font-style: italic;
+  display: block;
+}
+
+.termy [data-termynal] {
+  white-space: pre-wrap;
+}
+
+a.external-link::after {
+  /* \00A0 is a non-breaking space
+      to make the mark be on the same line as the link
+  */
+  content: "\00A0[↪]";
+}
+
+a.internal-link::after {
+  /* \00A0 is a non-breaking space
+      to make the mark be on the same line as the link
+  */
+  content: "\00A0↪";
+}
