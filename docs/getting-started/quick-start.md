@@ -33,35 +33,3 @@ Before you get started there are a few things you might want to do
 ```
 
 </div>
-
-
-## Commands
-
-* `quickzip run` - Run all the jobs in the default configuration file
-
-
-
-<div class="termy">
-
-```console
-$ qz run
-───────────── QuickZip: 'Dev Backup 3' ─────────────
-Creating: Dev Backup 3_2021.03.19_23.36.37
-
-            Audit Report `Dev Backup 3`
-╭────── Dev Backup 3_2021.03.19_23.35.44.zip ──────╮
-│ 100.03 MB                                        │
-│ Parent: Dev Backup 3                             │
-│ Days Old 0                                       │
-╰──────────────────────────────────────────────────╯
-
-               🗑  Cleanup 'data/dest'
-╭─ Dev Backup 3_2021.03.19.zip ─╮
-│ Deleted                       │
-│ Parent: Dev Backup 3          │
-│ From Source                   │
-╰───────────────────────────────╯
-
-```
-
-</div>

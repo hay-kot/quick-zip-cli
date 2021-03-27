@@ -1,6 +1,6 @@
 [config]
-enable_webhooks = false
-webhook_address = "https://webhooks.com/webhook"
+enable_webhooks = true
+webhook_address = "https://10.10.10.93:8123/api/webhook/tXpVcw2Cc6BG2stM6xa7kycauFGljuiL"
 zip_types = [ ".tar.gz", ".bz2", ".zip" ] # Does Nothing Yet 
 verbose = false
 

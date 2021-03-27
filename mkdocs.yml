@@ -15,13 +15,11 @@ theme:
   name: material
   icon:
     repo: fontawesome/brands/git-alt
-    logo: fontawesome/regular/folder-open
+    logo: fontawesome/regular/file-archive
   features:
     - navigation.instant
     - navigation.expand
     - navigation.sections
-    - navigation.tabs
-    - navigation.tabs.sticky
 
 markdown_extensions:
   - admonition
@@ -50,6 +48,7 @@ nav:
   - Getting Started:
       - About: "index.md"
       - Quick Start: "getting-started/quick-start.md"
+      - Commands: "getting-started/commands.md"
       - Usage Examples: "getting-started/usage-examples.md"
       - Config File: "getting-started/configuration-file.md"
       - Changelog: "getting-started/changelog.md"

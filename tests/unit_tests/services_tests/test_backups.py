@@ -3,17 +3,13 @@ from pathlib import Path
 
 import pytest
 from quick_zip.schema.backup_job import BackupJob, BackupResults
-from quick_zip.services.zipper import get_deletes, run
+from quick_zip.services import zipper
 
 
-def test_get_job_store(resource_dir):
-    jobs = BackupJob.get_job_store(resource_dir.joinpath("config.toml"))
-    assert all([isinstance(x, BackupJob) for x in jobs])
-
-
-# def test_validate_job_store(job_store, resource_dir, dest_dir):
-#     for job in job_store:
-#         pass
+def test_validate_job_store(job_store):
+    assert all(isinstance(x, BackupJob) for x in job_store)
+    for _ in job_store:
+        pass
 
 
 def test_replace_variables(test_config: Path):
@@ -37,7 +33,7 @@ def test_content_validation(job_store, temp_dir, dest_dir, file_with_content: Pa
     with open(file_with_content, "r") as f:
         valid_content = f.read()
 
-    data: BackupResults = run(job_to_run)
+    data: BackupResults = zipper.run(job_to_run)
     assert data
 
     temp_dir.mkdir(parents=True, exist_ok=True)
@@ -54,6 +50,6 @@ def test_keep_sort(test_files, x):
     """ 1 is the oldest, 5 is the newest"""
     source_dir = test_files[0].parent
 
-    deletes = get_deletes(source_dir, x)
+    deletes = zipper.get_deletes(source_dir, x)
     expected = test_files[:-x]
     assert set(deletes) == set(expected)

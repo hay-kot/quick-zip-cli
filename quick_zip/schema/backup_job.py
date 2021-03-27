@@ -149,6 +149,3 @@ class BackupResults(BaseModel):
     job: BackupJob
     audit: Optional[Audit]
 
-
-class PostData(BaseModel):
-    data: List[BackupResults]

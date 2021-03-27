@@ -60,7 +60,7 @@ def dest_dir():
         shutil.rmtree(dir)
 
 
-@pytest.fixture(scope="session")  #! This is dumb, remove this
+@pytest.fixture(scope="session")  # ! This is dumb, remove this
 def temp_dir():
     temp_dir = RESOURCES.joinpath(".temp")
     yield temp_dir

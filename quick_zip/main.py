@@ -28,8 +28,9 @@ def verbose(verbose: bool = False):
 
 
 @app.callback()
-def version_callback():
-    console.print(f"Quick Zip CLI Version: {APP_VERSION}")
+def version_callback(v):
+    if v:
+        console.print(f"Quick Zip CLI Version: {APP_VERSION}")
     return
 
 
@@ -60,7 +61,7 @@ def run(
         reports.append(report)
 
     if settings.enable_webhooks:
-        web.post_file_data(settings.webhook_address, body=PostData(data=reports))
+        web.post_file_data(settings.webhook_address, body=reports)
 
 
 @app.callback(invoke_without_command=True, no_args_is_help=True)

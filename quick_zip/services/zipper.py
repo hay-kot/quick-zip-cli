@@ -1,8 +1,8 @@
 import os
 import time
-from typing import List
 import zipfile as zf
 from pathlib import Path
+from typing import List
 
 from quick_zip.core.settings import console, settings
 from quick_zip.schema.backup_job import BackupJob, BackupResults
@@ -52,7 +52,7 @@ def zipdir(path, ziph, progress: Progress, task, top_dir):
                 progress.update(task, advance=file.stat().st_size)
 
 
-def run(job: BackupJob, verbose=False) -> dict:
+def run(job: BackupJob, verbose=False) -> BackupResults:
     dest = get_backup_name(job.name, job.final_dest, "zip", is_file=True)
     dest = job.final_dest.joinpath(dest)
 
@@ -67,7 +67,7 @@ def run(job: BackupJob, verbose=False) -> dict:
                 progress.update(task, description=f"[red]Zipping... {src.name}")
                 if src.is_dir():
                     top_dir = src
-                    zipdir(src, f, progress, task, top_dir)
+                    zipdir(top_dir, f, progress, task, top_dir)
                 else:
                     f.write(src, top_dir.joinpath(src.name))
 
@@ -144,8 +144,8 @@ def cleanup_card(src_list: List[Path], dest_list: List[Path], title):
     for p in dest_list:
         dest_content += p.name + "\n"
 
-    content += src_content if len(src_list) > 0 else ""
-    content += dest_content if len(dest_list) > 0 else ""
+    content += src_content if src_list else ""
+    content += dest_content if dest_list else ""
 
     return Panel(content, title=title, expand=False)
 
@@ -157,17 +157,16 @@ def get_backup_name(job_name, dest, extension: str = "", is_file: bool = False) 
     file_stem = f"{job_name}_{timestr}"
 
     final_name: Path
+    x = 1
     if is_file:
         final_name = f"{file_stem}.{extension}"
 
-        x = 1
         while list(dest.glob(f"{final_name}*")) != []:
             final_name = f"{file_stem}_{add_timestr}.{extension}"
             x += 1
     else:
         final_name = f"{file_stem}"
 
-        x = 1
         while list(dest.glob(f"{final_name}.*")) != []:
             final_name = f"{file_stem}_{add_timestr}"
             x += 1

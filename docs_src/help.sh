@@ -3,7 +3,7 @@ $ qz --help
 Usage: qz [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --verbose / --no-verbose        [default: False]
+  --version
   --install-completion [bash|zsh|fish|powershell|pwsh]
                                   Install completion for the specified shell.
   --show-completion [bash|zsh|fish|powershell|pwsh]
@@ -16,5 +16,5 @@ Commands:
   audit   🧐 Performs ONLY the audits for configured jobs
   config  📄 displays the configuration file
   docs    💬 Opens quickZip documentation in browser
-  jobs
+  jobs    🚧 Under construction...
   run     ✨ The main entrypoint for the application.

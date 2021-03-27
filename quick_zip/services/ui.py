@@ -6,7 +6,7 @@ from rich.layout import Panel
 
 
 def file_card(my_path: Path, title=None, title_color=None, append_text=None):
-    title = title if title else my_path.name
+    title = title or my_path.name
     if title_color:
         title = f"[b {title_color}]{title}[/]"
 

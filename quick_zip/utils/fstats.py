@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from pathlib import Path
 
@@ -26,7 +25,7 @@ def get_days_old(path: Path) -> int:
 def get_stats(file_folder: Path) -> dict:
     raw_stats = file_folder.stat()
 
-    pretty_stats = {
+    return {
         "stats": {
             "uid": raw_stats.st_uid,
             "gid": raw_stats.st_gid,
@@ -39,4 +38,3 @@ def get_stats(file_folder: Path) -> dict:
             "size": sizeof_fmt(raw_stats.st_size),
         }
     }
-    return pretty_stats
