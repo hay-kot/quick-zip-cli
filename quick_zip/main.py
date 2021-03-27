@@ -7,7 +7,7 @@ import typer
 
 from quick_zip.commands import audit, config, jobs
 from quick_zip.core.settings import APP_VERSION, console, settings
-from quick_zip.schema.backup_job import BackupJob, PostData
+from quick_zip.schema.backup_job import BackupJob
 from quick_zip.services import web, zipper
 
 app = typer.Typer()

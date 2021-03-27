@@ -148,4 +148,3 @@ class BackupResults(BaseModel):
     stats: FileStat
     job: BackupJob
     audit: Optional[Audit]
-
