@@ -3,7 +3,7 @@ from quick_zip.core import settings
 
 
 def test_version():
-    assert APP_VERSION == "v0.1.8"
+    assert APP_VERSION == "v0.1.9"
 
 
 def test_env_setup(test_app, test_config):

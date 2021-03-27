@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).parent.parent
 DEFAULT_CONFIG = BASE_DIR.joinpath("default.toml")
 QZ_HOME = Path.home().joinpath(".quick-zip")
 QZ_HOME.mkdir(exist_ok=True)
-APP_VERSION = "v0.1.8"
+APP_VERSION = "v0.1.9"
 console = Console()
 
 
