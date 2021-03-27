@@ -9,20 +9,7 @@ from quick_zip.schema.backup_job import BackupJob, BackupResults
 from quick_zip.services import checker, ui
 from quick_zip.utils import fstats
 from rich.columns import Columns
-from rich.layout import Panel
 from rich.progress import Progress
-
-
-def get_all_source_size(sources: List[Path]):
-    total = 0
-
-    for src in sources:
-        if src.is_file():
-            total += src.stat().st_size
-        else:
-            total += sum(f.stat().st_size for f in src.glob("**/*") if f.is_file())
-
-    return total
 
 
 def compress_dif(size_before, size_after):
@@ -39,115 +26,42 @@ def compress_dif(size_before, size_after):
     return f"Compression '{pretty_before}' -> '{pretty_after}' | [b]Size Reduced {round(percent)}%"
 
 
-def zipdir(path, ziph, progress: Progress, task, top_dir):
-    for root, _dirs, files in os.walk(path):
+def create_archive(sources: List[Path], dest: Path, to_zip_size: int):
+    def zipdir(path, ziph, top_dir):
+        for root, _dirs, files in os.walk(path):
 
-        for file in files:
-            progress.update(task, description=f"[red]Zipping...{Path(file).name}")
-            in_zip_path = os.path.relpath(os.path.join(root, file), top_dir)
-            ziph.write(os.path.join(root, file), in_zip_path)
+            for file in files:
+                progress.update(task, description=f"[red]Zipping...{Path(file).name}")
+                in_zip_path = os.path.relpath(os.path.join(root, file), top_dir)
+                ziph.write(os.path.join(root, file), in_zip_path)
 
-            if not progress.finished:
-                file = Path(root).joinpath(file)
-                progress.update(task, advance=file.stat().st_size)
+                if not progress.finished:
+                    file = Path(root).joinpath(file)
+                    progress.update(task, advance=file.stat().st_size)
 
-
-def run(job: BackupJob, verbose=False) -> BackupResults:
-    dest = get_backup_name(job.name, job.final_dest, "zip", is_file=True)
-    dest = job.final_dest.joinpath(dest)
-
-    to_zip_size = get_all_source_size(job.source)
-    with zf.ZipFile(dest.absolute(), mode="a") as f:
+    with zf.ZipFile(dest, mode="a") as f:
         with Progress() as progress:
 
             task = progress.add_task("[red]Zipping...", total=to_zip_size)
 
-            for src in job.source:
+            for src in sources:
                 top_dir = "/"
                 progress.update(task, description=f"[red]Zipping... {src.name}")
+
                 if src.is_dir():
                     top_dir = src
-                    zipdir(top_dir, f, progress, task, top_dir)
+                    zipdir(top_dir, f, top_dir)
                 else:
                     f.write(src, top_dir.joinpath(src.name))
 
                     if not progress.finished:
                         progress.update(task, advance=dest.stat().st_size)
 
-    compression = compress_dif(to_zip_size, get_all_source_size([dest]))
-    console.print(compression)
-
-    clean_up_cards = []
-    if job.clean_up:
-        _backups, dest_clean = clean_up_dir(job.final_dest, job.keep)
-        clean_up_cards = [ui.file_card(x, title_color="red", append_text="[i]From Source") for x in dest_clean]
-
-    # if job.clean_up_source:
-    #     _backups, src_clean = clean_up_dir(job.source, job.keep)
-    #     for file in src_clean:
-    #         clean_up_cards.append(ui.file_card(file, title_color="red", append_text="[i]From Destionation"))
-
-    audit_report = None
-    if job.audit:
-        audit_report = checker.audit(job.final_dest, job.oldest)
-
-    if settings.verbose and job.clean_up:
-        console.print(f"\n[b]🗑  Cleanup '{job.destination}'", justify="center")
-        content = Columns(clean_up_cards, equal=True, expand=False)
-        console.print(content)
-    elif job.clean_up:
-        for trash in dest_clean:
-            trash: Path
-            console.print(f"\n[b]Cleanup '{job.destination}'")
-
-            console.print(f"  🗑  [red]{trash.name}")
-
-    return BackupResults(
-        name=job.name,
-        job=job,
-        file=dest,
-        stats=fstats.get_stats(dest).get("stats"),
-        audit=audit_report,
-    )
-
-
-def get_all_stats(path: Path) -> dict:
-    my_stats = {"name": path.name}
-    my_stats.update(fstats.get_stats(path))
-    return
-
 
 def get_deletes(directory: Path, keep: int) -> List[Path]:
     clean_list = sorted(directory.iterdir(), key=os.path.getmtime, reverse=True)
     deletes = [x for x in clean_list if x.is_file()]
     return deletes[keep:]
-
-
-def clean_up_dir(directory: Path, keep: int) -> List[Path]:
-    clean_list = get_deletes(directory, keep)
-
-    for file in clean_list:
-        file.unlink()
-
-    backups = [get_all_stats(x) for x in directory.iterdir()]
-
-    return backups, clean_list
-
-
-def cleanup_card(src_list: List[Path], dest_list: List[Path], title):
-    content = ""
-    src_content = "[b red]Source Directory[/]\n"
-    for p in src_list:
-        src_content += p.name + "\n"
-
-    dest_content = "[b red]Destionation Directory[/]\n"
-    for p in dest_list:
-        dest_content += p.name + "\n"
-
-    content += src_content if src_list else ""
-    content += dest_content if dest_list else ""
-
-    return Panel(content, title=title, expand=False)
 
 
 def get_backup_name(job_name, dest, extension: str = "", is_file: bool = False) -> str:
@@ -173,3 +87,57 @@ def get_backup_name(job_name, dest, extension: str = "", is_file: bool = False) 
 
     console.print(f"Creating: {final_name}")
     return final_name
+
+
+def cleaner(job: BackupJob):
+    def clean_up_dir(directory: Path, keep: int) -> List[Path]:
+        clean_list = get_deletes(directory, keep)
+
+        for file in clean_list:
+            file.unlink()
+
+        # backups = [get_all_stats(x) for x in directory.iterdir()]
+
+        return clean_list
+
+    cards = []
+    dest_clean = None
+    if job.clean_up:
+        dest_clean = clean_up_dir(job.final_dest, job.keep)
+        cards += [ui.file_card(x, title_color="red", append_text="[i]From Destination") for x in dest_clean]
+
+    return cards, dest_clean
+
+
+def run(job: BackupJob) -> BackupResults:
+    dest = get_backup_name(job.name, job.final_dest, "zip", is_file=True)
+    dest = job.final_dest.joinpath(dest)
+
+    to_zip_size = fstats.get_directory_size(job.source)
+    create_archive(job.source, dest, to_zip_size)
+
+    compression = compress_dif(to_zip_size, fstats.get_directory_size(dest))
+    console.print(compression)
+
+    clean_up_cards, dest_clean = cleaner(job)
+
+    audit_report = checker.audit(job.final_dest, job.oldest) if job.audit else None
+
+    if settings.verbose and job.clean_up:
+        console.print(f"\n[b]🗑  Cleanup '{job.destination}'", justify="center")
+        content = Columns(clean_up_cards, equal=True, expand=False)
+        console.print(content)
+    elif job.clean_up:
+        for trash in dest_clean:
+            trash: Path
+            console.print(f"\n[b]Cleanup '{job.destination}'")
+
+            console.print(f"  🗑  [red]{trash.name}")
+
+    return BackupResults(
+        name=job.name,
+        job=job,
+        file=dest,
+        stats=fstats.get_stats(dest).get("stats"),
+        audit=audit_report,
+    )

@@ -10,7 +10,6 @@ MY_ROOT = "/"
 [defaults]
 destination = "/backups"
 clean_up = false
-clean_up_source = false
 all_files = true
 keep = 1
 audit = true

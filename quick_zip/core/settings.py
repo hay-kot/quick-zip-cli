@@ -28,7 +28,7 @@ def determine_config_file():
     if config_file.is_file():
         return config_file
 
-    return Path(shutil.copy(DEFAULT_CONFIG, Path.home().joinpath("quick-zip_config.toml")))
+    return Path(shutil.copy(DEFAULT_CONFIG, QZ_HOME.joinpath("qz-config.toml")))
 
 
 class AppSettings(BaseModel):

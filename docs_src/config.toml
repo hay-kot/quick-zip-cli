@@ -10,7 +10,6 @@ DATA_DIR = "/Users/hayden/Projects/quick-zip-cli/data"
 [defaults]
 destination = "/backups"
 clean_up = false
-clean_up_source = false
 keep = 1
 audit = true
 oldest = 4
@@ -22,7 +21,6 @@ source = [
 ]
 destination = "${DATA_DIR}/dest"
 clean_up = true
-clean_up_source = true
 
 [[jobs]]
 name = "Dev Backup 2"
@@ -31,7 +29,6 @@ source = [
 ]
 destination = "${DATA_DIR}/dest"
 clean_up = true
-clean_up_source = true
 
 [[jobs]]
 name = "Dev Backup 3"
@@ -40,6 +37,5 @@ source = [
 ]
 destination = "${DATA_DIR}/dest"
 clean_up = true
-clean_up_source = true
 
 

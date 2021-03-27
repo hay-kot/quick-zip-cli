@@ -42,6 +42,5 @@ def job_card(job_obj: BackupJob):
 [b blue]Audit[/]        = [i red]{job_obj.audit}[/]
 [b blue]Keep[/]         = [i red]{job_obj.keep}[/]
 [b blue]Clean Up Dst[/] = [i red]{job_obj.clean_up}[/]
-[b blue]Clean Up Src[/] = [i red]{job_obj.clean_up_source}[/]
 [b blue]Oldest[/]       = [i red]{job_obj.oldest}[/]"""
     return Panel(content, title=title)

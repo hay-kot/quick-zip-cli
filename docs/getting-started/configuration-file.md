@@ -40,11 +40,9 @@ The default values for jobs when values are not specified.
 `clean_up`
 :   Default: `'false | User Set'` · When enabled, QuickZip will clean up the destination directory and only keep the newest `keep` number of files
 
-`clean_up_source`
-:   Default: `'false | User Set'` · When enabled, QuickZip will clean up the source directory and only keep the newest `keep` number of files
 
 `keep`
-:   Default: `'4 | User Set'` · The number of files to keep when using `clean_up` and `clean_up_source`.
+:   Default: `'4 | User Set'` · The number of files to keep when using `clean_up`.
 
 `audit`
 :   Default: `'true | User Set'` · Whether or not to audit the files in the backup directory

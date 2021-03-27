@@ -13,7 +13,6 @@ When called, QuickZip will pull the most recent .tar file from the folder, zip i
     "source": "${HOME_ASSISTANT}/backups",
     "destination": "${NAS_DIR}/auto-backups",
     "clean_up": true,
-    "clean_up_source": true
 },
 ```
 !!! tip

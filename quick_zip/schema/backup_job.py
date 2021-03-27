@@ -29,7 +29,6 @@ class BackupJob(BaseModel):
         destination: Path
         all_files: bool = False
         clean_up: bool = False
-        clean_up_source: bool = False
         keep: int = 4
 
     """
@@ -39,7 +38,6 @@ class BackupJob(BaseModel):
     destination: Path
     all_files: bool = get_default("all_files", True)
     clean_up: bool = get_default("clean_up", True)
-    clean_up_source: bool = get_default("clean_up_source", False)
     keep: int = get_default("keep", 4)
     audit: bool = get_default("audit", True)
     oldest: int = get_default("oldest", 7)
